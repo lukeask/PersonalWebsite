@@ -137,6 +137,16 @@ class search:
             dictlist.append(newdict)
         return dictlist
 
+    def get_semester_list():
+        allfiles = search.get_class_file_list()
+        matchinglist = []
+        for filename in allfiles:
+            coursefile = courseFile(filename)
+            i = [coursefile.get_line(3)[0:-1], coursefile.get_line(4)[0:-1]]
+            if i not in matchinglist:
+                matchinglist.append(i)
+        return matchinglist
+
 
 class file_tests:
     def test_coursefile_init():
