@@ -1,5 +1,7 @@
 # file_object  = open(“filename”, “mode”) where file_object is the variable to add the file object.
+#used for initializing file objects, logging TODO
 from datetime import date
+import os
 
 class webDataFile:
     # initializes file with filename
@@ -19,9 +21,18 @@ class webDataFile:
         file.close()
 
     def rewrite_line(self, line_number, text):
-        pass
+        linelist = []
+        file = open(self.name, "r")
+        for line in file:
+            linelist.append(line)
+        linelist[line_number] = text + "\n"
+        self.create_file()
+        for line in linelist:
+            file = open(self.name,"a")
+            file.write(line)
+            file.close()
 
-    #need_to_test
+    #returns a line
     def get_line(self, line_int):
         linelist = []
 
@@ -41,13 +52,15 @@ class courseFile(webDataFile):
         self.created = date.today()
 
     # creates a course file entry in the courses directory
-    def init_course(self, course_number, course_name, course_description, course_semester, course_year):
+    def init_course(self, course_number, course_name, course_description, course_semester, course_year, course_text, course_author):
         self.create_file()
         self.append_line(course_number)
         self.append_line(course_name)
         self.append_line(course_description)
         self.append_line(course_semester)
         self.append_line(course_year)
+        self.append_line(course_text)
+        self.append_line(course_author)
 
     def edit_course(self, selection, new_string):
         pass
@@ -79,9 +92,11 @@ class user_interface:
         course_description = input("Enter Course Description:")
         course_semester = input("Enter Course Semester (Fall/Spring/Summer):")
         course_year = input("Enter Course Year:")
+        course_text = input("Enter Textbook Title:")
+        course_author = input("Enter Textbook Author:")
         #save to file named coursenumber
         newcourse = courseFile(course_number)
-        newcourse.init_course(course_number, course_name, course_description, course_semester, course_year)
+        newcourse.init_course(course_number, course_name, course_description, course_semester, course_year, course_text, course_author)
 
 
 class file_tests:
@@ -94,5 +109,24 @@ class file_tests:
         math317.init_course("317", "Intro to Analysis", "sequences", "Fall", "2019")
         print(math317.get_line(2))
         print(math317.get_line(3))
+
+    def test_rewrite_line():
+        math317 = courseFile("math317.txt")
+        math317.init_course("317", "Intro to Analysis", "sequences", "Fall", "2019")
+        math317.rewrite_line(0, "318")
+
+    def print_courses():
+        coursetitles = []
+        for filename in os.listdir("courses"):
+            coursefile = courseFile(filename)
+            # janky but removes the /n
+            coursetitles.append(coursefile.get_line(1)[0:-1])
+        import pdb; pdb.set_trace()
+        for coursetitle in coursetitles:
+            print(coursetitle)
+
+
+
+
 
 user_interface.create_course()
