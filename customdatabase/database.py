@@ -1,4 +1,4 @@
-# file_object  = open(“filename”, “mode”) where file_object is the variable to add the file object.
+# DO NOT RUN FROM INSIDE THIS FILE, USE test.py FOR PROPER PATHS
 #used for initializing file objects, logging TODO
 from datetime import date
 import os
@@ -48,7 +48,7 @@ class webDataFile:
 
 class courseFile(webDataFile):
     def __init__(self, name):
-        self.name = "courses/" + name
+        self.name = "customdatabase/courses/" + name
         self.created = date.today()
 
     # creates a course file entry in the courses directory
@@ -77,7 +77,7 @@ class courseFile(webDataFile):
 
 class projectFile(webDataFile):
     def __init__(self, name):
-        self.name = "projects/" + name
+        self.name = "customdatabase/projects/" + name
         self.created = date.today()
 
     def init_project(self):
@@ -98,35 +98,73 @@ class user_interface:
         newcourse = courseFile(course_number)
         newcourse.init_course(course_number, course_name, course_description, course_semester, course_year, course_text, course_author)
 
+class search:
+    def get_class_file_list():
+        coursefiles = []
+        for filename in os.listdir("customdatabase/courses"):
+            coursefiles.append(filename)
+        return coursefiles
+
+    def get_class_files_semester(semester, year):
+        allfiles = search.get_class_file_list()
+        matchinglist = []
+        for filename in allfiles:
+            coursefile = courseFile(filename)
+            # import pdb; pdb.set_trace()
+            if coursefile.get_line(3)[0:-1] == semester and coursefile.get_line(4)[0:-1] == year:
+                matchinglist.append(filename)
+            else:
+                continue
+        return matchinglist
+
+
+    def dict_formatted(semester, year):
+        # return a list of dictionaries with needed data for frontend
+        dictlist = []
+        filelist = search.get_class_files_semester(semester, year)
+        for filename in filelist:
+            coursefile = courseFile(filename)
+
+            newdict = {
+            'number': coursefile.get_line(0)[0:-1],
+            'name': coursefile.get_line(1)[0:-1],
+            'description': coursefile.get_line(2)[0:-1],
+            'semester': coursefile.get_line(3)[0:-1],
+            'year ': coursefile.get_line(4)[0:-1],
+            'text': coursefile.get_line(5)[0:-1],
+            'author': coursefile.get_line(6)[0:-1]
+            }
+            dictlist.append(newdict)
+        return dictlist
+
 
 class file_tests:
     def test_coursefile_init():
         math317 = courseFile("math317.txt")
-        math317.init_course("317", "Intro to Analysis", "sequences", "Fall", "2019")
+        math317.init_course("317", "Intro to Analysis", "sequences", "Fall", "2019", "", "")
 
     def test_get_line():
         math317 = courseFile("math317.txt")
-        math317.init_course("317", "Intro to Analysis", "sequences", "Fall", "2019")
+        math317.init_course("317", "Intro to Analysis", "sequences", "Fall", "2019", "", "")
         print(math317.get_line(2))
         print(math317.get_line(3))
 
     def test_rewrite_line():
         math317 = courseFile("math317.txt")
-        math317.init_course("317", "Intro to Analysis", "sequences", "Fall", "2019")
+        math317.init_course("317", "Intro to Analysis", "sequences", "Fall", "2019", "", "")
         math317.rewrite_line(0, "318")
 
     def print_courses():
         coursetitles = []
-        for filename in os.listdir("courses"):
+        # directory from lukeaskew.py
+        for filename in os.listdir("customdatabase/courses"):
             coursefile = courseFile(filename)
             # janky but removes the /n
             coursetitles.append(coursefile.get_line(1)[0:-1])
-        import pdb; pdb.set_trace()
         for coursetitle in coursetitles:
             print(coursetitle)
 
-
-
-
-
-user_interface.create_course()
+    def matching_test():
+        listmatching = search.get_class_files_semester("Spring", "2020")
+        for item in listmatching:
+            print(item)

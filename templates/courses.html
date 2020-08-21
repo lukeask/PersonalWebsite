@@ -2,12 +2,13 @@
 
 {% block content %}
 
-<!--
+
   <h1>Courses</h1>
-  {for course in courses}
-  <p>course</p>
-  { endfor }
--->
+  {% for course in courses %}
+  <p>{{course.name}}</p>
+  {% endfor %}
+  <p> </p>
+  <p> </p>
 <hr>
 <h4>Fall 2020 (Current)</h4>
 <p></p>MATH 566 Introduction to Abstract Algebra I, Algebra: Chapter 0 by Paolo Aluffi
