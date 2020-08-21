@@ -147,6 +147,30 @@ class search:
                 matchinglist.append(i)
         return matchinglist
 
+    def full_course_dict_old():
+        final_dict_list = []
+        for semester in search.get_semester_list():
+            #import pdb; pdb.set_trace()
+            for dict in search.dict_formatted(semester[0], semester[1]):
+                final_dict_list.append(dict)
+        return final_dict_list
+
+    def full_dict_list():
+        allfiles = search.get_class_file_list()
+        dictlist = []
+        for filename in allfiles:
+            coursefile = courseFile(filename)
+            newdict = {
+            'number': coursefile.get_line(0)[0:-1],
+            'name': coursefile.get_line(1)[0:-1],
+            'description': coursefile.get_line(2)[0:-1],
+            'semester': coursefile.get_line(3)[0:-1],
+            'year': coursefile.get_line(4)[0:-1],
+            'text': coursefile.get_line(5)[0:-1],
+            'author': coursefile.get_line(6)[0:-1]
+            }
+            dictlist.append(newdict)
+        return dictlist
 
 class file_tests:
     def test_coursefile_init():

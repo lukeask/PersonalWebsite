@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for
 import customdatabase.database as dbs
 
-
+semesters = sorted(sorted(dbs.search.get_semester_list(), key = lambda x : x[0]), key = lambda x : x[1], reverse = True)
 
 app = Flask(__name__)
 
@@ -17,7 +17,7 @@ def projects():
 
 @app.route("/courses")
 def courses():
-    return render_template('courses.html', title = "Projects", courses = dbs.search.dict_formatted("Fall", "2019"))
+    return render_template('courses.html', title = "Projects", semesters = semesters, courses = dbs.search.full_dict_list())
 
 @app.route("/cv")
 def cv():
