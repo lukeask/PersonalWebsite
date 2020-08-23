@@ -20,6 +20,7 @@ class webDataFile:
         file.write(text + "\n")
         file.close()
 
+    #rewrites a line in a file
     def rewrite_line(self, line_number, text):
         linelist = []
         file = open(self.name, "r")
@@ -46,6 +47,15 @@ class webDataFile:
     def delete_file(self):
         pass
 
+    #returns lines as a list in the form [line0, line1, ...]
+    def return_lines_as_list(self):
+        linelist = []
+        file = open(self.name, "r")
+        for line in file:
+            linelist.append(line)
+        return linelist
+
+#allows for interaction with course files for courses.html, defines file format
 class courseFile(webDataFile):
     def __init__(self, name):
         self.name = "customdatabase/courses/" + name
@@ -65,22 +75,21 @@ class courseFile(webDataFile):
     def edit_course(self, selection, new_string):
         pass
 
-    #returns data as list
-    def return_lines_as_list(self):
-        linelist = []
-        file = open(self.name, "r")
-        for line in file:
-            linelist.append(line)
-        return linelist
-
-
-
+#class for projects to appear on projects.html
 class projectFile(webDataFile):
     def __init__(self, name):
         self.name = "customdatabase/projects/" + name
         self.created = date.today()
 
-    def init_project(self):
+    def init_project(self, project_title, project_description, project_PDF_address, project_pride):
+        self.create_file()
+        self.append_line(project_title)
+        self.append_line(project_description)
+        #TODO projects with no PDF?
+        self.append_line(project_PDF_address)
+        self.append_line(project_pride)
+
+    def edit_project(self):
         pass
 
 #TODO move to own file
@@ -97,6 +106,12 @@ class user_interface:
         #save to file named coursenumber
         newcourse = courseFile(course_number)
         newcourse.init_course(course_number, course_name, course_description, course_semester, course_year, course_text, course_author)
+
+    def create_project():
+        project_title = input("Enter Project Title")
+        project_description = input("Enter Project Description")
+        project_pdf_link = input("Enter Project Link")
+        project_pride = input("Enter Pride in Project (1-5 int value, 5 is proud)")
 
 class search:
     def get_class_file_list():
@@ -202,3 +217,7 @@ class file_tests:
         listmatching = search.get_class_files_semester("Spring", "2020")
         for item in listmatching:
             print(item)
+
+    def project_test():
+        thiswebsite = projectFile("thissite")
+        thiswebsite.init_project("This Website", "This website was written using Flask and is hosted on a virtual private server. Website updates are tested using a simulated copy of my VPS on my homelab virtualization server", "lukeaskew.xyz", "2")
