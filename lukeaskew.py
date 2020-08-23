@@ -12,7 +12,8 @@ def home():
 
 @app.route("/projects")
 def projects():
-    return render_template('projects.html', title = "Projects", projects = dbs.project_search.dict_formatted())
+    #import pdb; pdb.set_trace()
+    return render_template('projects.html', title = "Projects", projects = sorted(dbs.project_search.dict_formatted(), key = lambda x : x['pride_score'], reverse = True))
 
 @app.route("/courses")
 def courses():
@@ -22,9 +23,9 @@ def courses():
 def cv():
     return render_template('cv.html', title = "Projects")
 
-@app.route("/teaching")
-def teaching():
-    return render_template('teaching.html', title = "Teaching")
+#@app.route("/teaching")
+#def teaching():
+#    return render_template('teaching.html', title = "Teaching")
 
 #@app.route("/webapps")
 #def webapps():
