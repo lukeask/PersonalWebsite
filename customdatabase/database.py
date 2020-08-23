@@ -112,8 +112,10 @@ class user_interface:
         project_description = input("Enter Project Description")
         project_pdf_link = input("Enter Project Link")
         project_pride = input("Enter Pride in Project (1-5 int value, 5 is proud)")
+        newproject = projectFile(project_title)
+        newproject.init_project(project_title, project_description, project_pdf_link, project_pride)
 
-class search:
+class course_search:
     def get_class_file_list():
         coursefiles = []
         for filename in os.listdir("customdatabase/courses"):
@@ -121,7 +123,7 @@ class search:
         return coursefiles
 
     def get_class_files_semester(semester, year):
-        allfiles = search.get_class_file_list()
+        allfiles = course_search.get_class_file_list()
         matchinglist = []
         for filename in allfiles:
             coursefile = courseFile(filename)
@@ -136,7 +138,7 @@ class search:
     def dict_formatted(semester, year):
         # return a list of dictionaries with needed data for frontend
         dictlist = []
-        filelist = search.get_class_files_semester(semester, year)
+        filelist = course_search.get_class_files_semester(semester, year)
         for filename in filelist:
             coursefile = courseFile(filename)
 
@@ -153,7 +155,7 @@ class search:
         return dictlist
 
     def get_semester_list():
-        allfiles = search.get_class_file_list()
+        allfiles = course_search.get_class_file_list()
         matchinglist = []
         for filename in allfiles:
             coursefile = courseFile(filename)
@@ -164,14 +166,14 @@ class search:
 
     def full_course_dict_old():
         final_dict_list = []
-        for semester in search.get_semester_list():
+        for semester in course_search.get_semester_list():
             #import pdb; pdb.set_trace()
-            for dict in search.dict_formatted(semester[0], semester[1]):
+            for dict in course_search.dict_formatted(semester[0], semester[1]):
                 final_dict_list.append(dict)
         return final_dict_list
 
     def full_dict_list():
-        allfiles = search.get_class_file_list()
+        allfiles = course_search.get_class_file_list()
         dictlist = []
         for filename in allfiles:
             coursefile = courseFile(filename)
@@ -183,6 +185,29 @@ class search:
             'year': coursefile.get_line(4)[0:-1],
             'text': coursefile.get_line(5)[0:-1],
             'author': coursefile.get_line(6)[0:-1]
+            }
+            dictlist.append(newdict)
+        return dictlist
+
+class project_search:
+    def get_project_file_list():
+        projectfiles = []
+        for filename in os.listdir("customdatabase/projects"):
+            projectfiles.append(filename)
+        return projectfiles
+
+    def dict_formatted():
+        # return a list of dictionaries with needed data for frontend
+        dictlist = []
+        filelist = project_search.get_project_file_list()
+        for filename in filelist:
+            projectfile = projectFile(filename)
+
+            newdict = {
+            'title': projectfile.get_line(0)[0:-1],
+            'description': projectfile.get_line(1)[0:-1],
+            'pdf_link': projectfile.get_line(2)[0:-1],
+            'pride_score': projectfile.get_line(3)[0:-1],
             }
             dictlist.append(newdict)
         return dictlist

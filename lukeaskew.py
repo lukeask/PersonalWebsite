@@ -12,11 +12,11 @@ def home():
 
 @app.route("/projects")
 def projects():
-    return render_template('projects.html', title = "Projects")
+    return render_template('projects.html', title = "Projects", projects = dbs.project_search.dict_formatted())
 
 @app.route("/courses")
 def courses():
-    return render_template('courses.html', title = "Projects", semesters = sorted(sorted(dbs.search.get_semester_list(), key = lambda x : x[0]), key = lambda x : x[1], reverse = True), courses = dbs.search.full_dict_list())
+    return render_template('courses.html', title = "Projects", semesters = sorted(sorted(dbs.course_search.get_semester_list(), key = lambda x : x[0]), key = lambda x : x[1], reverse = True), courses = dbs.course_search.full_dict_list())
 
 @app.route("/cv")
 def cv():
