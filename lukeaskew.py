@@ -9,7 +9,6 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
-
 @app.route("/projects")
 def projects():
     #import pdb; pdb.set_trace()
@@ -23,6 +22,16 @@ def courses():
 def cv():
     return render_template('cv.html', title = "Projects")
 
+@app.route("/blog")
+def blog():
+    return render_template('blog.html', title = "Blog")
+
+@app.route("/blog/<name>")
+def blogpost(name):
+    htmllocation = f"/blogposts/{name}.html"
+    return render_template(htmllocation, title = "Test")
+
+
 #@app.route("/teaching")
 #def teaching():
 #    return render_template('teaching.html', title = "Teaching")
@@ -34,7 +43,6 @@ def cv():
 
 
 
-
-
 if __name__ == '__main__':
     app.run(debug=True)
+#    app.run(debug=False, port = 80, host = "0.0.0.0")
