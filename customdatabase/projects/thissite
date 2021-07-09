@@ -1,4 +1,0 @@
-lukeaskew.xyz
-This website was written using Flask and is hosted on a virtual private server. Website updates are tested using a simulated copy of my VPS on my "homelab virtualization machine" (a broken laptop I bought, fixed, and upgraded for $50). The website uses a custom text file database to update dynamically as I add new content and the source code can be found on my GitHub.
-
-1
