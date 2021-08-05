@@ -4,7 +4,7 @@ import customdatabase.database as dbs
 
 app = Flask(__name__)
 
-app.config['SERVER_NAME'] = 'lukeaskew.xyz'
+#app.config['SERVER_NAME'] = 'lukeaskew.xyz'
 
 @app.route("/")
 @app.route("/home")
