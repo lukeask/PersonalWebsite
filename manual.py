@@ -6,9 +6,5 @@ import customdatabase.database as dbs
 #import pdb; pdb.set_trace()
 
 #MANUAL ENTRY
-dbs.user_interface.create_project()
-
-#if __name__ == '__main__':
-#    app.run(debug=False, port = 80, host = "0.0.0.0" )
-
-#dbs.user_interface.create_course()
+#dbs.user_interface.create_project()
+dbs.user_interface.create_course()
