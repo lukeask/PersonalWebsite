@@ -1,4 +1,0 @@
-Computing a Basis for Polynomial Solutions to Systems of Homogeneous Linear PDEs with Constant Coefficients Algebraically
-This final poster project was completed in my first semester at CSU and was a winner for a cash prize for abstract algebra at CSU's undergraduate math poster competition. I was concurrently taking my first course in differential equations so when I found a book called Solving Systems of Polynomial Equations by Sturmfels which had an algorithm relating the two courses, that algorithm became the basis for the poster. I found allowing differential operators as generators of an ideal to be a notably interesting trick to combine tools from algebra and calculus and implemented a version of the algorithm in sage.
-/static/projects/466.pdf
-4

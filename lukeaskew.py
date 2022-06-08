@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for
-import customdatabase.database as dbs
-
+from database import get_events
+from countdowns import year_of_gradschool
 
 app = Flask(__name__)
 
@@ -9,12 +9,8 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html')
+    return render_template('home.html', yearstring = year_of_gradschool())
 
-@app.route("/projects")
-def projects():
-    #import pdb; pdb.set_trace()
-    return render_template('projects.html', title = "Projects", projects = sorted(dbs.project_search.dict_formatted(), key = lambda x : x['pride_score'], reverse = True))
 
 @app.route("/courses")
 def courses():
@@ -24,14 +20,24 @@ def courses():
 def cv():
     return render_template('cv.html', title = "Projects")
 
-@app.route("/blog")
+@app.route("/research")
 def blog():
-    return render_template('blog.html', title = "Blog")
+    return render_template('research.html', title = "Research")
 
-@app.route("/blog/<name>")
-def blogpost(name):
-    htmllocation = f"/blogposts/{name}.html"
-    return render_template(htmllocation, title = "Test")
+@app.route("/talks")
+def talks():
+    title = "Talks",
+
+
+    events = get_events()
+    show_upcoming = False
+    if "upcoming" in [event["type"] for event in events]:
+        show_upcoming = True
+
+    return render_template('talks.html', title = title, events = events,  show_upcoming = show_upcoming)
+
+
+
 
 
 #@app.route("/teaching")

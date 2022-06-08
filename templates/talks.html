@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+<!-- If there are upcoming_events, display them -->
+{% if show_upcoming %}
+<h1>Upcoming Talks and Travel</h1>
+<br>
+<hr>
+
+
+
+{% for event in events%}
+{%if event.type == "upcoming"%}
+
+<hr>
+  <h4>{{event.title}}</h4>
+  <p style="text-align:left;">
+      {{talk.host}}
+      <span style="float:right;">
+          {{talk.location}}   {{talk.date}}
+      </span>
+<hr>
+
+{% if event.abstract != ""%}
+<p>Decription:</p>
+<p>{{event.abstract}}</p>
+<br>
+<hr>
+{%endif%}
+
+
+{%endif%}
+{% endfor %}
+
+{%endif%}
+
+<h1>Past Talks</h1>
+<br>
+<hr>
+
+<!-- Past Talks -->
+{% for event in events%}
+{%if event.type == "talk"%}
+
+
+  <h4>{{event["title"]}}</h4>
+  <br>
+  <p style="text-align:left;">
+      {{event["host"]}}
+      <span style="float:right;">
+          {{event.location}}   {{event.date}}
+          <br>
+      </span>
+
+<hr>
+
+{% if event.abstract != ""%}
+<p>Abstract:</p>
+<p>{{event["abstract"]}}</p>
+
+<hr>
+{%endif%}
+
+{%endif%}
+{% endfor %}
+
+
+<h1>Past Travel and Conferences Attended</h1>
+<br>
+<hr>
+<p>If you think we met somewhere before, it was probably somewhere in this list:</p>
+
+<!-- Past Travel -->
+{% for event in events%}
+{%if event.type == "misc"%}
+
+<hr>
+  <h4>{{event["title"]}}</h4>
+  <p style="text-align:left;">
+      {{talk.host}}
+      <span style="float:right;">
+          {{talk.location}}   {{talk.date}}
+      </span>
+<hr>
+
+{% if event.abstract != ""%}
+<p>{{event.abstract}}</p>
+
+<hr>
+{%endif%}
+
+{%endif%}
+{% endfor %}
+
+
+
+
+
+
+{% endblock content %}
