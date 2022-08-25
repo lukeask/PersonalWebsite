@@ -26,4 +26,4 @@ def get_events():
     return list(events.find())
 
 
-upload_event(format_event_dict("a Topology Driven Approach to Localization", "talk", "", "MSU REU Poster Session", "Montana State University", "Fall 2019"))
+#uploadvent(format_event_dict("PCMI Summer School", "upcoming" , "Number theory informed by computation", "Institute for Advanced Study", "Park City, Utah", "July 17, 2022"))
