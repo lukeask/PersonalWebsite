@@ -47,8 +47,9 @@ def talks():
     return render_template('talks.html', title = title, events = events,  show_upcoming = show_upcoming)
 
 
-
-
+@app.route("/teaching")
+def teaching():
+    return render_template('teaching.html', title = 'Teaching')
 
 #@app.route("/teaching")
 #def teaching():
