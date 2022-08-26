@@ -1,6 +1,7 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, send_from_directory
 from database import get_events
 from countdowns import year_of_gradschool
+import os
 
 app = Flask(__name__)
 
@@ -11,6 +12,11 @@ app = Flask(__name__)
 def home():
     return render_template('home.html', yearstring = year_of_gradschool())
 
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route("/courses")
 def courses():
@@ -23,6 +29,10 @@ def cv():
 @app.route("/research")
 def blog():
     return render_template('research.html', title = "Research")
+
+@app.route("/contact")
+def contact():
+    return render_template('contact.html', title = "Contact")
 
 @app.route("/talks")
 def talks():
