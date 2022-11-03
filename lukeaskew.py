@@ -24,7 +24,7 @@ def courses():
 
 @app.route("/cv")
 def cv():
-    return render_template('cv.html', title = "Projects")
+    return render_template('cv.html', title = "CV")
 
 @app.route("/research")
 def blog():
@@ -44,7 +44,7 @@ def talks():
     if "upcoming" in [event["type"] for event in events]:
         show_upcoming = True
 
-    return render_template('talks.html', title = title, events = events,  show_upcoming = show_upcoming)
+    return render_template('talks.html', title = "Talks", events = events,  show_upcoming = show_upcoming)
 
 
 @app.route("/teaching")
