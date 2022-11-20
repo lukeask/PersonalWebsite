@@ -6,6 +6,7 @@ import os
 app = Flask(__name__)
 
 #app.config['SERVER_NAME'] = 'lukeaskew.xyz'
+#source end/bin/activate
 
 @app.route("/")
 @app.route("/home")
