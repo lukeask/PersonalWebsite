@@ -27,6 +27,10 @@ def courses():
 def cv():
     return render_template('cv.html', title = "CV")
 
+@app.route("/notes")
+def notes():
+    return render_template('notes.html', title = "Notes")
+
 @app.route("/research")
 def blog():
     return render_template('research.html', title = "Research")
