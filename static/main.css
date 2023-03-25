@@ -25,6 +25,13 @@ h1, h2, h3, h4, h5, h6 {
   width: 50%;
 }
 
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
 a {
 color: darkgreen
 }
