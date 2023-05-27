@@ -40,16 +40,7 @@ def contact():
 
 @app.route("/talks")
 def talks():
-    title = "Talks",
-
-
-    events = get_events()
-    show_upcoming = False
-    if "upcoming" in [event["type"] for event in events]:
-        show_upcoming = True
-
-    return render_template('talks.html', title = "Talks", events = events,  show_upcoming = show_upcoming)
-
+    return render_template('talks.html', title = 'Talks')        
 
 @app.route("/teaching")
 def teaching():
