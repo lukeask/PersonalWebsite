@@ -1,5 +1,4 @@
 from flask import Flask, render_template, url_for, send_from_directory
-from database import get_events
 from countdowns import year_of_gradschool
 import os
 
@@ -55,6 +54,11 @@ def talks():
 @app.route("/teaching")
 def teaching():
     return render_template('teaching.html', title = 'Teaching')
+
+@app.route("/drp")
+def drp():
+    return render_template('drp.html', title = 'DRP')
+
 
 #@app.route("/teaching")
 #def teaching():
