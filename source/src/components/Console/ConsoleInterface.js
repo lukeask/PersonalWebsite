@@ -74,6 +74,7 @@ function ConsoleInterface() {
 
       default:
         newOutput.push(`Command not found: ${cmd}. Try 'help'`);
+        break;
     }
 
     setOutput(newOutput);
