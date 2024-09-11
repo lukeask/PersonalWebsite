@@ -1,0 +1,55 @@
+.console {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  font-family: 'SauceCodePro Nerd Font Mono', monospace;
+  height: 100vh;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.console-output {
+  margin-bottom: 20px;
+}
+
+.console-output div {
+  margin-bottom: 5px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.console form {
+  display: flex;
+  align-items: center;
+}
+
+.prompt {
+  color: #4CAF50;
+  margin-right: 10px;
+}
+
+.console input {
+  flex-grow: 1;
+  background-color: transparent;
+  border: none;
+  color: #f0f0f0;
+  font-family: 'SauceCodePro Nerd Font Mono', monospace;
+  font-size: 16px;
+  outline: none;
+}
+
+/* Scrollbar styles */
+.console::-webkit-scrollbar {
+  width: 10px;
+}
+
+.console::-webkit-scrollbar-track {
+  background: #2e2e2e;
+}
+
+.console::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.console::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

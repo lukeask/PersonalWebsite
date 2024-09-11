@@ -1,0 +1,167 @@
+body {
+  background-color: #f8f9fa;
+  color: #333;
+  font-family: 'SauceCodePro Nerd Font Mono', monospace;
+
+}
+
+.landing-page {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.navbar {
+  width: 200px;
+  background-color: #333;
+  color: #f0f0f0;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.navbar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.navbar li {
+  margin-bottom: 15px;
+}
+
+.navbar a, .navbar button {
+  color: #f0f0f0;
+  text-decoration: none;
+  font-size: 16px;
+  display: block;
+  padding: 10px;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.navbar a:hover, .navbar button:hover {
+  background-color: #555;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 40px;
+  background-color: #f0f0f0;
+}
+
+.about-me {
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.about-me h1 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 2.5em;
+}
+
+.about-me p {
+  line-height: 1.6;
+  color: #555;
+  font-size: 1.1em;
+}
+
+.about-me h1, .about-me p {
+  transition: all 0.3s ease;
+}
+
+.about-me h1:hover {
+  transform: translateX(2px);
+}
+
+.main-content {
+  border-left: 1px solid #ddd;
+}
+
+/* console button */
+
+.console-toggle-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  font-family: 'SauceCodePro Nerd Font Mono', monospace;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #333;
+  background-color: #f0f0f0;
+  border: 2px solid #333;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  outline: none;
+}
+
+.console-toggle-button:hover {
+  background-color: #333;
+  color: #f0f0f0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.console-toggle-button:active {
+  transform: scale(0.95);
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 0.05em 0 0 #00fffc, -0.03em -0.04em 0 #fc00ff,
+      0.025em 0.04em 0 #fffc00;
+  }
+  15% {
+    text-shadow: 0.05em 0 0 #00fffc, -0.03em -0.04em 0 #fc00ff,
+      0.025em 0.04em 0 #fffc00;
+  }
+  16% {
+    text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.035em 0 #fc00ff,
+      -0.05em -0.05em 0 #fffc00;
+  }
+  49% {
+    text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.035em 0 #fc00ff,
+      -0.05em -0.05em 0 #fffc00;
+  }
+  50% {
+    text-shadow: 0.05em 0.035em 0 #00fffc, 0.03em 0 0 #fc00ff,
+      0 -0.04em 0 #fffc00;
+  }
+  99% {
+    text-shadow: 0.05em 0.035em 0 #00fffc, 0.03em 0 0 #fc00ff,
+      0 -0.04em 0 #fffc00;
+  }
+  100% {
+    text-shadow: -0.05em 0 0 #00fffc, -0.025em -0.04em 0 #fc00ff,
+      -0.04em -0.025em 0 #fffc00;
+  }
+}
+
+.console-toggle-button:hover::after {
+  content: 'CONSOLE MODE';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #333;
+  color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: glitch 0.3s infinite;
+}
+
+.console-toggle-button {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease, box-shadow 0.3s ease;
+}
+
+.console-toggle-button:hover {
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
