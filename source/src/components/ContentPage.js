@@ -1,9 +1,11 @@
 // src/components/ContentPage.js
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 import Navbar from './Navbar';
 import '../styles/ContentPage.css';
-
 
 function ContentPage({ contentFile }) {
   const [content, setContent] = useState('');
@@ -17,8 +19,15 @@ function ContentPage({ contentFile }) {
   return (
     <div className="page">
       <Navbar />
-      <main className="content">
-        <ReactMarkdown>{content}</ReactMarkdown>
+      <main className="main-content">
+        <main className="content">
+          <ReactMarkdown 
+            remarkPlugins={[remarkMath]}
+            rehypePlugins={[rehypeKatex]}
+          >
+            {content}
+          </ReactMarkdown>
+        </main>
       </main>
     </div>
   );

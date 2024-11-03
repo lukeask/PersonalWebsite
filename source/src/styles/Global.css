@@ -1,13 +1,7 @@
-    @font-face {
-        font-family: 'SauceCodePro Nerd Font Mono';
-        src: url('../fonts/SauceCodeProNerdFont-Regular.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-    
     body {
         font-family: 'SauceCodePro Nerd Font Mono', monospace;
-    }/* src/styles/Global.css */
+    }
+    
     @font-face {
     font-family: 'SauceCodePro Nerd Font Mono';
     src: url('../fonts/SauceCodeProNerdFont-Regular.ttf') format('truetype');
@@ -15,7 +9,14 @@
     font-style: normal;
     }
 
-
+    h1, h2, h3, h4, h5, h6 {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+    }
+    p {
+        margin-top: 0.5em;
+        line-height: 1.2;
+    }
     /* Hyperlink styles */
     a {
     color: #4CAF50; /* Console green color */
@@ -24,10 +25,7 @@
 
     a:hover {
     text-decoration: underline; /* Adds underline on hover */
-    }
-
-    a:visited {
-    color: #45a049; /* Slightly darker green for visited links */
+    transition: text-decoration 0.3s ease; /* Adds transition animation to the underline */
     }
 
     a:active {

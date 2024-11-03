@@ -1,88 +1,58 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/Console.css';
+import { processCommand } from '../../utils/CommandProcessor';
 
 function ConsoleInterface() {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState([]);
+  const [hasCommandBeenUsed, setHasCommandBeenUsed] = useState(false);
   const inputRef = useRef(null);
+  const outputRef = useRef(null);
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
+  useEffect(() => {
+    if (outputRef.current) {
+      outputRef.current.scrollTop = outputRef.current.scrollHeight;
+    }
+  }, [output]);
+
   const handleInputChange = (e) => {
     setInput(e.target.value);
   };
 
-  const handleInputSubmit = (e) => {
+  const handleInputSubmit = async (e) => {
     e.preventDefault();
-    processCommand(input);
+    const trimmedInput = input.trim();
+    if (trimmedInput === '') return;
+
+    const newOutput = [...output, `guest@askew.sh:~$ ${trimmedInput}`];
+    const commandOutput = await processCommand(trimmedInput);
+    
+    if (hasCommandBeenUsed === false) {
+      setHasCommandBeenUsed(true);
+    }
+
+    if (commandOutput === null) {
+      setOutput([]);
+    } else {
+      newOutput.push(commandOutput.output);
+      setOutput(newOutput);
+    }
+    
     setInput('');
   };
 
-  const processCommand = (cmd) => {
-    const newOutput = [...output, `guest@askew.sh:~$ ${cmd}`];
-    
-    switch(cmd.toLowerCase()) {
-      case 'help':
-      case 'ls':
-    
-        newOutput.push('Available commands: publications, blog, luke, research');
-        break;
-
-      case 'man help':
-        newOutput.push('NAME\n    help - display available commands\nUSAGE\n    help [OPTION]\nOPTIONS\n    -a    display all available commands\n');
-        break;
-
-      case 'help -a':
-      case 'ls -a':
-        newOutput.push('Available commands: publications, blog, luke, exit, clear, pwd');
-        break;
-
-      case 'clear':
-        newOutput.length = 0;
-        break;
-
-      case 'exit':
-        window.location.href = '/';
-        return;
-
-      case 'pwd':
-        newOutput.push('/home/guest');
-        break;
-
-      case 'publications':
-        newOutput.push('Displaying publications... (todo)');
-        // TODO
-        break;
-      case 'blog':
-        newOutput.push('Displaying blog posts... (todo)');
-        // TODO
-        break;
-      case 'luke':
-        newOutput.push("I'm a mathematics graduate student at Dartmouth studying arithmetic geometry advised by Asher Auel."    );
-        // TODO
-        break;
-      case 'research':
-        window.location.href = '/research';
-        return;
-
-      case 'contact':
-        newOutput.push('Displaying contact information... (todo)');
-        // TODO
-        break;
-
-      default:
-        newOutput.push(`Command not found: ${cmd}. Try 'help'`);
-        break;
-    }
-
-    setOutput(newOutput);
+  const handleConsoleClick = (e) => {
+    e.preventDefault();
+    inputRef.current.focus();
   };
 
   return (
-    <div className="console">
-      <div className="console-output">
+    <div className="console" onClick={handleConsoleClick}>
+      <div className="console-output" ref={outputRef}>
         {output.map((line, index) => (
           <div key={index}>{line}</div>
         ))}
@@ -90,9 +60,12 @@ function ConsoleInterface() {
       <form onSubmit={handleInputSubmit}>
         <span className="prompt">guest@askew.sh:~$</span>
         <input
-          type="text"
+          ref={inputRef}
           value={input}
           onChange={handleInputChange}
+          placeholder={
+            !hasCommandBeenUsed ? "Type 'help' to see available commands" : ''
+          }
           ref={inputRef}
         />
       </form>

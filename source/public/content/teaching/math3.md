@@ -1,0 +1,1 @@
+This is a placeholder for the Math 3 course webpage.
