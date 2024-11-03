@@ -1,0 +1,152 @@
+body {
+  background-color: #f8f9fa;
+  color: #333;
+  font-family: 'SauceCodePro Nerd Font Mono', monospace;
+}
+
+.landing-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.main-content {
+  width: 75%;
+  max-width: 1200px;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  display: block;
+  box-sizing: border-box;
+}
+
+.content {
+  width: 100%;
+  padding: 2rem;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.about-me {
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.about-me h1 {
+  color: #333;
+  margin-bottom: 1.25rem;
+  font-size: 2.5em;
+}
+
+.about-me p {
+  line-height: 1.6;
+  color: #555;
+  font-size: 1.1em;
+}
+
+.about-me h1, .about-me p {
+  transition: all 0.3s ease;
+}
+
+.about-me h1:hover {
+  transform: translateX(0.125rem);
+}
+
+.console-toggle-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  font-family: 'SauceCodePro Nerd Font Mono', monospace;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #333;
+  background-color: #f0f0f0;
+  border: 2px solid #333;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  outline: none;
+}
+
+.console-toggle-button:hover {
+  background-color: #333;
+  color: #f0f0f0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.console-toggle-button:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 1024px) {
+
+  body {
+    background-color: white;
+  }
+
+  .landing-page {
+    padding: 0;
+    background-color: white;
+    box-shadow: none;
+    flex-direction: column;
+  }
+
+  .page {
+    padding: 0;
+  }
+
+  .landing-page {
+    padding: 0;
+  }
+  
+  .main-content {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+  }
+
+  .content {
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .about-me {
+    width: 100%;
+    padding: 0 0rem;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  .about-me h1 {
+    font-size: 2em;
+  }
+
+  .about-me p {
+    font-size: 1em;
+    word-wrap: break-word;
+    max-width: 100%;
+  }
+
+  .console-toggle-button {
+    bottom: 10px;
+    right: 10px;
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  .navbar {
+    width: 5%;
+  }
+
+}
+
