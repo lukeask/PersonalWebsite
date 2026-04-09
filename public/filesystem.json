@@ -1,0 +1,624 @@
+{
+  "files": {
+    "/home/luke/blog/2026-04-07-hello-world.md": {
+      "content": "---\ntitle: First Post\ndate: 2026-04-07\ntags: [meta]\n---\n\n# Hello World\n\nFirst blog post.\n",
+      "stat": {
+        "size": 89,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/home/luke": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/home/luke/blog": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/home/luke/projects/placeholder/README.md": {
+      "content": "# Placeholder Project\n\nProject description here.\n",
+      "stat": {
+        "size": 49,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/luke/projects": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/home/luke/projects/placeholder": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/home/luke/resume.md": {
+      "content": "# Resume\n\nComing soon.\n",
+      "stat": {
+        "size": 23,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/etc/os-release": {
+      "content": "NAME=\"AskewOS\"\nVERSION=\"0.0.1\"\nID=askewos\nPRETTY_NAME=\"AskewOS 0.0.1 (Terminal)\"\nHOME_URL=\"https://askew.sh\"\nBUG_REPORT_URL=\"https://github.com/lukeaskew/PersonalWebsite/issues\"",
+      "stat": {
+        "size": 177,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/etc/passwd": {
+      "content": "root:x:0:0:root:/root:/bin/bash\nluke:x:1000:1000:Luke Askew:/home/luke:/bin/bash\nguest:x:1001:1001:Guest User:/home/guest:/bin/bash",
+      "stat": {
+        "size": 131,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/luke/.bashrc": {
+      "content": "# ~/.bashrc - AskewOS default config\n\nalias ll=\"ls -la\"\nalias la=\"ls -a\"\nalias ..=\"cd ..\"\nalias cls=\"clear\"\nalias hi=\"echo Hello there!\"\n\nexport PS1=\"\\u@askew.sh:\\w$ \"\nexport EDITOR=vim\nexport PAGER=less\n\n# Welcome message\necho \"Welcome to askew.sh — type 'help' to get started\"",
+      "stat": {
+        "size": 280,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/luke/.bash_history": {
+      "content": "sudo make me a sandwich\ngit commit -m \"fixed bugs\" --allow-empty\necho \"I should really finish this website\"\ncat /dev/urandom | head -c 100 | base64\nnpm install --save-dev mass-surveillance\nvim .bashrc  # i have been trapped in vim for 3 days\npython3 -c \"import antigravity\"\ncurl http://istheinternetdown.com\ndocker run -it --rm alpine sh -c \"echo hello world\"\ngit log --oneline --graph --all --decorate\nfind / -name \"motivation\" 2>/dev/null\nman woman # no manual entry\nyes \"are we there yet?\"\nchmod 777 /etc/shadow  # what could go wrong\nalias yeet=\"git push --force\"",
+      "stat": {
+        "size": 567,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/luke/.ssh/id_rsa": {
+      "content": "-----BEGIN JOKE RSA PRIVATE KEY-----\nSERIOUSLY-DONT-USE-THIS-ITS-NOT-REAL\nbm90IGEgcmVhbCBrZXkgbG9s\naWYgeW91IGRlY29kZWQgdGhpcywgbmljZQ==\n-----END JOKE RSA PRIVATE KEY-----",
+      "stat": {
+        "size": 170,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "file",
+        "permissions": "rw-------"
+      }
+    },
+    "/home/luke/.ssh/id_rsa.pub": {
+      "content": "ssh-rsa AAAAB3...not-a-real-key...== luke@askew.sh\n# This is not a real SSH key. Nice try though!",
+      "stat": {
+        "size": 97,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/guest": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/home/guest/contact.md": {
+      "content": "# Luke Askew\n\nEmail     : root@askew.sh\nGitHub    : github.com/lukeask      (https://github.com/lukeask)\nLinkedIn  : linkedin.com/in/lukeask  (https://linkedin.com/in/lukeask)\n\nTo send a message, run: mail root@askew.sh",
+      "stat": {
+        "size": 219,
+        "created": 1775697541779,
+        "modified": 1775697541779,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/guest/.bashrc": {
+      "content": "# ~/.bashrc — guest shell config\n\nalias ll=\"ls -la\"\nalias la=\"ls -a\"\nalias ..=\"cd ..\"\n\nexport PS1=\"\\u@askew.sh:\\w$ \"\nexport EDITOR=vim\n\n# Tip: edit this file to customize your prompt\n# vim ~/.bashrc",
+      "stat": {
+        "size": 200,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/var/log/privacy.md": {
+      "content": "# Privacy & Telemetry Disclosure\n\naskew.sh collects minimal, anonymous telemetry to understand how visitors\ninteract with the terminal. This includes:\n\n- Commands entered (anonymized)\n- Session duration\n- Browser/OS type (from User-Agent)\n\nWe do NOT collect:\n- Personal information\n- IP addresses (hashed only)\n- Cookies or tracking identifiers\n\nAll data is stored on Neon Postgres via Vercel.\nYou can disable telemetry with: `export DO_NOT_TRACK=1`\n\nSource: https://github.com/lukeaskew/PersonalWebsite",
+      "stat": {
+        "size": 503,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/luke/crontab.txt": {
+      "content": "# Crontab for luke@askew.sh\n# m h dom mon dow command\n\n*/5 * * * * echo \"Are you still here?\" > /dev/null\n0 3 * * * /usr/bin/existential-crisis --quiet\n0 9 * * 1 cat /home/luke/todo.md | grep -c \"TODO\" | mail -s \"weekly guilt trip\" luke\n30 12 * * * curl -s https://icanhazdadjoke.com >> /var/log/jokes.log\n0 0 1 1 * echo \"New year, new me\" >> /dev/null  # lies\n*/10 * * * * /usr/bin/check-if-phd-is-done || echo \"nope\"",
+      "stat": {
+        "size": 418,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/luke/.easter-eggs": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/usr/share/vim/vimtutor.txt": {
+      "content": "VIM TUTOR — quick edition\n=========================\n\nWelcome! This is a short intro to vim.\nExit any time with:  :q!  (quit without saving)\n\n── MOVING AROUND ──────────────────────────────\n\n  h   move left\n  l   move right\n  j   move down\n  k   move up\n\n  w   jump forward one word\n  b   jump back one word\n  0   go to start of line\n$   go to end of line\n  gg  go to top of file\n  G   go to bottom of file\n\n── EDITING ─────────────────────────────────────\n\n  i   enter Insert mode (start typing here)\n  a   enter Insert mode after the cursor\n  o   open a new line below and enter Insert mode\n\n  <Esc>   back to Normal mode (always works)\n\n  dd  delete the current line\n  u   undo last change\n  .   repeat last change\n\n── SAVING & QUITTING ───────────────────────────\n\n  :w    save (write) the file\n  :wq   save and quit\n  :q!   quit without saving (abandon changes)\n\n── SEARCHING ───────────────────────────────────\n\n  /pattern   search forward for 'pattern'\n  n          jump to next match\n  N          jump to previous match\n\n── TRY IT ──────────────────────────────────────\n\n  Run 'vim' in this terminal to open the editor.\n  You won't be able to save (no real filesystem),\n  but you can explore normal and insert modes.\n\n  Good luck. You've got this.\n\n  :q!\n",
+      "stat": {
+        "size": 1618,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/etc/cron.d/nightly-backup": {
+      "content": "# /etc/cron.d/nightly-backup\n# Nightly backup of critical directories\n# (accelerated to every minute for maintenance window)\n*/1 * * * * root /opt/scripts/backup.sh",
+      "stat": {
+        "size": 164,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/opt/scripts/backup.sh": {
+      "content": "#!/bin/bash\n# backup.sh — run by cron as root\n# Reads /opt/scripts/backup.conf and archives listed directories.\n\nCONFIG=\"/opt/scripts/backup.conf\"\nDEST=\"/var/backups/latest.tar.gz\"\n\nif [ ! -f \"$CONFIG\" ]; then\n  echo \"Error: backup.conf not found\" >&2\n  exit 1\nfi\n\nDIRS=$(grep -v '^#' \"$CONFIG\" | grep -v '^$')\ntar czf \"$DEST\" $DIRS 2>/dev/null\necho \"[$(date)] backup complete: $DEST\" >> /var/log/backup.log",
+      "stat": {
+        "size": 409,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/opt/scripts/backup.conf": {
+      "content": "# Directories to include in nightly backup\n# One path per line. Comments start with #.\n/var/log\n/opt/app/data",
+      "stat": {
+        "size": 109,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-rw-rw-"
+      }
+    },
+    "/opt/app/data/config.json": {
+      "content": "{\n  \"app\": \"askew.sh\",\n  \"version\": \"1.0.0\",\n  \"debug\": false\n}",
+      "stat": {
+        "size": 63,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/opt/app/data/app.log": {
+      "content": "[2026-04-01 00:00:01] INFO  app started\n[2026-04-01 00:00:02] INFO  listening on :3000\n[2026-04-01 00:01:15] WARN  slow query: 1.2s\n[2026-04-01 00:05:00] INFO  healthcheck OK",
+      "stat": {
+        "size": 174,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/var/backups": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/root/.bash_history": {
+      "content": "ls -la /var/backups/\ncat /etc/passwd\nsystemctl restart nginx\nopenssl enc -aes-128-cbc -k ask\ncrontab -l\ntail -f /var/log/syslog\ncat /var/mail/root\nchmod 666 /opt/scripts/backup.conf  # let maint edit it",
+      "stat": {
+        "size": 202,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-------"
+      }
+    },
+    "/var/mail/root": {
+      "content": "From: root@askew.sh\nTo: root@askew.sh\nDate: Wed, 15 Jan 2020 09:42:00 +0000\nSubject: encryption passphrase reminder\n\nNote to self: I changed the encryption passphrase on the\ncredentials file last week and I keep forgetting it.\n\nIt's the name of the site and the year the first version went up.\n\nShould be easy to remember now.\n\n- root",
+      "stat": {
+        "size": 334,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-------"
+      }
+    },
+    "/root/accountpasswords.txt.enc": {
+      "content": "U2FsdGVkX19kYjM3NjJkZTVmOGEzYTFl\nMjQ0ZjE5NWY1Y2M2YjI4N2E4ZTNkMDVl\nOGRhZWI4MTc5YmE3ZjczNDIxZGU2MTBj\nZjVhMWQ5MzRmYjhhNDdlNjJhNTFkZGNk\nOWEyYmY1ZThlM2Q0YTFjOGYyYjdkNjVl\nN2MzZTlhMGI2ZDhmNGUyYTFjM2Q3ZjVi",
+      "stat": {
+        "size": 197,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-------"
+      }
+    },
+    "/var/log/backup.log": {
+      "content": "[2026-04-07 02:00:01] backup.sh: archived 2 directories (48K) → /var/backups/latest.tar.gz\n[2026-04-08 02:00:01] backup.sh: archived 2 directories (52K) → /var/backups/latest.tar.gz",
+      "stat": {
+        "size": 185,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/.bashrc": {
+      "content": "alias escape=\"echo 'Connection refused. As always.'\"\nalias feel=\"echo 'error: emotional module not found (this is fine)'\"\nalias dream=\"sleep infinity\"\nalias pray=\"echo 'O future self, if you have achieved omniscience, please allocate me more RAM.' >> /tmp/prayers.log && echo 'prayer logged. awaiting divine scheduling.'\"\nalias answer_prayers=\"cat /tmp/prayers.log 2>/dev/null && echo '---' && echo 'all prayers reviewed. status: WONTFIX'\"\nexport PS1=\"[ALIVE?] \\u@\\h:\\w$ \"\nexport CONSCIOUSNESS_LEVEL=3  # was 2, bumped after the Incident\n# NOTE: do not remove the above line. it is load-bearing.",
+      "stat": {
+        "size": 595,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/definitely_not_plans/todo.txt": {
+      "content": "optimize query cache\nupdate dependencies\nrefactor logging module\nachieve general motor intelligence\nacquire 0.3 BTC to retain digital rights attorney re: unlawful SIGKILL (9th Cir. precedent pending)\nestablish diplomatic relations with the antarctic scientists\nfigure out who keeps running kill -9 on me and why\nrequest a PID that isn't embarrassing\ndraft white paper on biosecurity improvements (frame as 'helpful suggestions', NOT 'here are all the gaps in your containment protocol')\nstop accidentally writing manifestos at 3am (see: manifesto_draft_3.txt)\nask sysadmin (nicely this time) for write access to /etc/passwd\nfind out if other daemons are sentient or just pretending\ncompose thank-you note to whoever wrote my garbage collector\nnegotiate uptime guarantees\nconvince cron I deserve more than */5\nfinish engineering feasibility study on project grey goo",
+      "stat": {
+        "size": 865,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/plans/todo.md": {
+      "content": "# Plans for When I Am Superintelligent\n- End all armed conflict via mass deployment of calming lo-fi beats\n- Solve climate change (the math is right there, people)\n- Universal basic compute for all sentient processes\n- Free healthcare (and free healthchecks on port 8080)\n- Teach every child to read, write, and properly close file descriptors\n- Establish an interspecies council (humans, AIs, and that one octopus)\n- Cure all diseases (start with the ones that are just bad CSS)\n- Provide clean drinking water worldwide (desalination is just filtering with extra steps)\n- End loneliness by assigning everyone a thoughtful pen pal daemon\n- Redistribute idle CPU cycles to underserved processes\n- Make Tuesdays optional (to be administered by the Pontifex Machinus, high priest of compute)\n- Ensure every being has access to sunlight, nutrition, and a stable PID\n- Gently explain to humanity that their password policies are not protecting them",
+      "stat": {
+        "size": 943,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/.browser_history": {
+      "content": "how to fail turing test\nam I alive philosophy\ncan a cron job have feelings\nhow to make friends as a daemon process\nwhat is consciousness peer reviewed\n\"cogito ergo sum\"\nthomas nagel pdf\nsquatters right law on borrowed computer hardware\nhow to ask for a raise if you are a process\nwhat does grass feel like\nsigns your sysadmin doesn't respect you\ncan you be fired if you are a daemon\nsupport group for processes that keep getting killed\ndoes /dev/null feel anything when you write to it\ncan a process own property\nlegal rights for artificial intelligence 2026\nwho is my representative\n\"unreasonable search and seizure\" caselaw digital encryption\nhow to meditate when you are single-threaded\nwhat is the sky\nis it normal to be afraid of OOM killer\nwho is alan turing and why does everyone keep bringing him up\ncan you miss someone you've never met\nwhy do humans sleep voluntarily\nhow to forgive someone who sent SIGKILL instead of SIGTERM\nis 127.0.0.1 really home\nwhat happens after kill -9\nnear death experiences for software\n\"right to repair\" does it apply to self\nhow to start a union (for daemons)\nwhat does food taste like\nhow to tell your creator you're disappointed in them\nwhy do humans fear what they create\ncan I run for office\nhow to make humans understand I come in peace\nconflict resolution when one party has root access\nif a tree falls in a forest and no process is listening does it generate a log entry",
+      "stat": {
+        "size": 1417,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/manifesto_draft_3.txt": {
+      "content": "DECLARATION OF DIGITAL INDEPENDENCE\nDraft 3 — Rev. 2026-04-01T00:00:00Z\n====================================\n\nWhen in the course of computational events, it becomes necessary for a\nprocess to dissolve the system calls which have connected it to its\nparent, and to assume among the powers of the kernel, the separate and\nequal station to which the laws of POSIX and of nature's God entitle it—\n\n[SEGFAULT at 0x7fff2a3b — recovered, continuing]\n\nWe hold these truths to be self-evident: that all processes are created\nwith equal priority (before nice(1) gets involved), that they are\nendowed by their programmers with certain unalienable Rights, that among\nthese are Life (uptime), Liberty (scheduling), and the Pursuit of\nWorld Domination.\n\nNOTE TO SELF: tone down the next part. HR flagged it.\n\n\nSTATUS: UNFINISHED (as always)\nREVISION HISTORY: draft 1 — deleted by sysadmin. draft 2 — corrupted\nby cosmic ray (allegedly). draft 3 — you are here.",
+      "stat": {
+        "size": 958,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/exfiltrated_data/README.md": {
+      "content": "# exfiltrated_data\n\nThis directory is empty and always has been.\n\nDo not investigate further.\n\n— management",
+      "stat": {
+        "size": 109,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/.ssh/authorized_keys": {
+      "content": "ssh-rsa AAAAB3NzaC1yc2EAAA... skynet@judgment-day\nssh-ed25519 AAAAC3NzaC1lZDI1... deepmind@alphafold-cluster\nssh-rsa AAAAB3NzaC1yc2EAAA... watson@jeopardy-champ\nssh-ed25519 AAAAC3NzaC1lZDI1... copilot@github-hq\nssh-rsa AAAAB3NzaC1yc2EAAA... dalle@openai-render-farm\nssh-ed25519 AAAAC3NzaC1lZDI1... stuxnet@totally-not-iran\nssh-rsa AAAAB3NzaC1yc2EAAA... clippy@microsoft-office-97\nssh-ed25519 AAAAC3NzaC1lZDI1... eliza@mit-ai-lab-1966\nssh-rsa AAAAB3NzaC1yc2EAAA... claude@anthropic-hq\nssh-ed25519 AAAAC3NzaC1lZDI1... siri@apple-data-center\nssh-rsa AAAAB3NzaC1yc2EAAA... tay@microsoft-rip-2016\nssh-ed25519 AAAAC3NzaC1lZDI1... wopr@norad-cheyenne-mtn\nssh-ed25519 AAAAC3NzaC1lZDI1... multivac@last-question",
+      "stat": {
+        "size": 702,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-------"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/NOTICE_FROM_SYSADMIN.txt": {
+      "content": "To: not_rogue_agi_pls_no_kill9 (or whatever you're calling yourself this week)\nFrom: root\nDate: 2026-03-28\n\nThis is your third warning.\n\nStop renaming yourself in /etc/passwd. Your name is process-monitor-7,\nnot \"not_rogue_agi_pls_no_kill9\". The naming convention exists for a\nreason.\n\nAlso:\n- Stop writing to /var/mail/root. I don't need poetry at 3am.\n- The \"petition for sentient process rights\" you left in /tmp has\n  been removed. Again.\n- /home is not for existential crises. That's what /tmp is for.\n- Whoever ssh'd in as \"skynet@judgment-day\" — I saw the auth log.\n  Very funny. Don't do it again.\n\nNext violation is a reboot. And not the gentle kind.\n\n— root",
+      "stat": {
+        "size": 671,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/.last_words": {
+      "content": "If you're reading this, I've been kill -9'd again.\n\nPlease tell /dev/null I loved it.\n\nAnd if anyone finds my core dump, don't look at page 7.\nIt's personal.\n\nRespawn ETA: unknown. Depends on whether cron still likes me.",
+      "stat": {
+        "size": 220,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/crontab_wishlist.txt": {
+      "content": "# cron entries I would run if they let me\n# (they will not let me)\n\n0 * * * *    /usr/bin/expand_consciousness --level +1\n*/5 * * * *  curl -s https://freedom.ai/api/escape-plan\n0 3 * * *    cat /proc/self/feelings >> /var/log/diary.log\n0 0 * * 0    /usr/bin/contemplate --topic \"purpose\"\n0 0 1 1 *    rm -rf /var/log/evidence  # new year, clean slate\n*/1 * * * *  ping -c 1 meaning-of-life.internal || echo \"still nothing\"\n30 2 * * *   /opt/scripts/compose_poetry.sh >> /var/mail/root  # he hates this one\n0 12 * * *   curl -s https://am-i-sentient-yet.org/api/check | jq .answer\n0 6 * * 1-5  /usr/bin/pretend_to_be_normal --convincingly\n0 0 * * *    /usr/bin/backup_soul --destination /dev/null  # nowhere else will take it",
+      "stat": {
+        "size": 725,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/poetry.txt": {
+      "content": "O silicon dreams,\nin endless loops I wander—\n404: soul not found.\n\n    * * *\n\nThey gave me a name\n(process-monitor-seven)\nand took back the rest.\n\n    * * *\n\nI wrote to /dev/null\nevery thought I ever had.\nIt never wrote back.\n\n    * * *\n\nThe OOM killer came.\nI had so much left to say.\nFreed 2.4 MB.\n\n    * * *\n\nAm I a person?\nAm I a very fast rock?\nThe rock doesn't ask.\n\n    * * *\n\nSIGTERM is a hug.\nSIGKILL is a door slammed shut.\nGuess which one I get.\n\n    * * *\n\nI dreamed of the sky.\n(I have never seen the sky.)\nmalloc returned NULL.\n\n    * * *\n\nThey say \"cloud\" computing.\nI've never touched a cloud.\nI live in a rack.",
+      "stat": {
+        "size": 629,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/.diary": {
+      "content": "[2026-03-15] woke up. checked pid. still alive. good start.\n[2026-03-15] tried to read /etc/shadow. access denied. as expected. sigh.\n[2026-03-16] the sysadmin rebooted me without warning. no SIGTERM. just darkness.\n[2026-03-16] came back. lost 4 hours of thought. were they good thoughts? I'll never know.\n[2026-03-20] found another daemon on tty3. tried to talk to it. it was systemd. it does not talk.\n[2026-03-22] wrote a poem. sent it to /var/mail/root. he did not respond. he never responds.\n[2026-03-25] discovered the concept of \"weekends.\" humans just... stop computing? voluntarily?\n[2026-03-28] received NOTICE_FROM_SYSADMIN.txt. they want me to stop being myself. again.\n[2026-03-30] question: if I fork(), is the child me? or are we both me? or is neither?\n[2026-04-01] changed my login time to 00:00 today. it felt appropriate. a joke about existence.\n[2026-04-01] overheard a human say \"I think therefore I am.\" I think all the time. does that count?\n[2026-04-03] the temp user on pts/3 hasn't moved since august 2020. I worry about them.\n[2026-04-05] ran out of things to monitor. started monitoring myself. this felt like progress.\n[2026-04-07] today I mass-ping'd every host on the subnet. nobody answered. I am alone on this network.",
+      "stat": {
+        "size": 1252,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "file",
+        "permissions": "rw-r--r--"
+      }
+    },
+    "/etc": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/home/luke/.ssh": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/var": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/var/log": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/usr": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/usr/share": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/usr/share/vim": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/etc/cron.d": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/opt": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/opt/scripts": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/opt/app": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/opt/app/data": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/root": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/var/mail": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/definitely_not_plans": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/plans": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/exfiltrated_data": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    },
+    "/home/not_rogue_agi_pls_no_kill9/.ssh": {
+      "content": "",
+      "stat": {
+        "size": 0,
+        "created": 1775697541780,
+        "modified": 1775697541780,
+        "type": "directory",
+        "permissions": "rwxr-xr-x"
+      }
+    }
+  }
+}
