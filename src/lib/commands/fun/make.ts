@@ -1,7 +1,6 @@
 import type { Command, TerminalOutputLine } from "@/lib/types";
 import { registry } from "@/lib/shell/registry";
-
-// TODO T-404: import { markEggFound } from "@/lib/ctf/hints";
+import { markEggFound } from "@/lib/ctf/game";
 
 // --- make ---
 
@@ -25,7 +24,6 @@ const makeCommand: Command = {
   description: "build automation",
   usage: "make [target]",
   execute(args) {
-    // TODO T-404: markEggFound("make");
     const target = args[0];
     if (!target) {
       return {
@@ -38,6 +36,7 @@ const makeCommand: Command = {
     }
     switch (target) {
       case "coffee":
+        markEggFound("make-coffee");
         return { lines: COFFEE_ART.map(txt), exitCode: 0 };
       case "love":
         return {

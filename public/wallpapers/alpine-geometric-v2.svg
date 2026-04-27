@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="alpineSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1a14" />
+      <stop offset="100%" stop-color="#163023" />
+    </linearGradient>
+    <clipPath id="sunClip">
+      <rect x="0" y="0" width="1920" height="640" />
+    </clipPath>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#alpineSky)" />
+
+  <g clip-path="url(#sunClip)" transform="translate(960 640)">
+    <circle r="280" fill="#e8dcc0" />
+    <circle r="280" fill="none" stroke="#0e2018" stroke-width="6" />
+    <circle r="240" fill="none" stroke="#0e2018" stroke-width="3" />
+    <circle r="200" fill="none" stroke="#0e2018" stroke-width="3" />
+    <circle r="160" fill="none" stroke="#0e2018" stroke-width="3" />
+    <circle r="120" fill="none" stroke="#0e2018" stroke-width="3" />
+    <circle r="80" fill="none" stroke="#0e2018" stroke-width="3" />
+  </g>
+
+  <polygon points="0,640 280,440 540,560 760,420 980,540 1240,400 1500,520 1760,420 1920,500 1920,640" fill="#3a5a48" />
+  <polygon points="0,720 220,540 420,640 620,500 880,640 1080,520 1340,660 1560,540 1780,640 1920,580 1920,720" fill="#1f3a2c" />
+  <polygon points="0,1080 0,820 180,640 340,760 520,580 700,720 880,540 1080,700 1280,560 1480,720 1680,600 1880,740 1920,700 1920,1080" fill="#050d09" />
+
+  <g fill="#e8dcc0">
+    <polygon points="180,640 220,680 260,650 300,690 340,760 320,720 280,720 240,700 200,720" />
+    <polygon points="520,580 560,620 600,600 640,640 700,720 680,690 640,680 600,700 560,680" />
+    <polygon points="880,540 920,580 960,560 1000,600 1080,700 1050,670 1010,660 970,680 920,660" />
+    <polygon points="1280,560 1320,600 1360,580 1400,620 1480,720 1450,690 1410,680 1370,700 1320,680" />
+    <polygon points="1680,600 1720,640 1760,620 1800,660 1880,740 1850,710 1810,700 1770,720 1720,700" />
+  </g>
+
+  <rect x="0" y="900" width="1920" height="180" fill="#020604" />
+</svg>

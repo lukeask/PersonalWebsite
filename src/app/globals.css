@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0b1813;
+  --foreground: #e8dcc0;
 
-  --terminal-bg: #1a1b26;
-  --terminal-fg: #a9b1d6;
-  --terminal-user: #7aa2f7;
-  --terminal-host: #bb9af7;
-  --terminal-cwd: #7dcfff;
-  --terminal-error: #f7768e;
-  --terminal-bold: #c0caf5;
-  --terminal-dim: #565f89;
-  --terminal-highlight: #e0af68;
-  --terminal-link: #73daca;
-  --terminal-green: #9ece6a;
-  --terminal-cursor: #c0caf5;
-  --terminal-selection: #283457;
+  --terminal-bg: rgba(5, 13, 9, 0.62);
+  --terminal-fg: #e8dcc0;
+  --terminal-user: #d9ccb1;
+  --terminal-host: #9fc7ae;
+  --terminal-cwd: #d9b878;
+  --terminal-error: #e89880;
+  --terminal-bold: #f3e8cf;
+  --terminal-dim: #9ab09f;
+  --terminal-highlight: #e8c97a;
+  --terminal-link: #8dc8a7;
+  --terminal-green: #a8d4b6;
+  --terminal-cursor: #f3e8cf;
+  --terminal-selection: rgba(168, 212, 182, 0.2);
 }
 
 @theme inline {
@@ -39,15 +39,120 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.askew-app {
+  --wallpaper-image: url("/wallpapers/alpine-geometric-v2.svg");
+  --wallpaper-overlay: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.12) 0%,
+    rgba(0, 0, 0, 0.38) 100%
+  );
+  --shell-bg: rgba(6, 16, 11, 0.58);
+  --shell-border: rgba(232, 220, 192, 0.22);
+  --shell-title-bg: rgba(4, 12, 8, 0.82);
+  --shell-status-bg: rgba(4, 12, 8, 0.82);
+  --shell-accent: #a8d4b6;
+  --shell-dim: rgba(232, 220, 192, 0.62);
+}
+
+.askew-app[data-theme="light"] {
+  --background: #e5decb;
+  --foreground: #223027;
+
+  --terminal-bg: rgba(240, 244, 241, 0.78);
+  --terminal-fg: #1f2a23;
+  --terminal-user: #254f38;
+  --terminal-host: #356c4b;
+  --terminal-cwd: #7a5a1c;
+  --terminal-error: #8f3333;
+  --terminal-bold: #152019;
+  --terminal-dim: #4a5a51;
+  --terminal-highlight: #2f6a48;
+  --terminal-link: #315f8f;
+  --terminal-green: #2f6a48;
+  --terminal-cursor: #1f2a23;
+  --terminal-selection: rgba(47, 106, 72, 0.18);
+
+  --wallpaper-image: url("/wallpapers/snowfall-reflection-lightmode.svg");
+  --wallpaper-overlay: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(222, 229, 224, 0.55) 100%
+  );
+  --shell-bg: rgba(244, 246, 243, 0.72);
+  --shell-border: rgba(60, 80, 65, 0.2);
+  --shell-title-bg: rgba(232, 236, 233, 0.86);
+  --shell-status-bg: rgba(232, 236, 233, 0.86);
+  --shell-accent: #2f6a48;
+  --shell-dim: rgba(31, 42, 35, 0.62);
 }
 
 body {
+  margin: 0;
+  min-height: 100vh;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+.askew-app {
+  position: relative;
+  min-height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  color: var(--terminal-fg);
+}
+
+.askew-wallpaper,
+.askew-wallpaper-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.askew-wallpaper {
+  background-image: var(--wallpaper-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.askew-wallpaper-vignette {
+  background: var(--wallpaper-overlay);
+}
+
+.askew-shell {
+  position: relative;
+  z-index: 1;
+  width: min(1680px, calc(100% - 0.5rem));
+  height: calc(100dvh - 2rem);
+  border: 1px solid var(--shell-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--shell-bg);
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.45),
+    0 8px 20px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(24px) saturate(130%);
+  -webkit-backdrop-filter: blur(24px) saturate(130%);
+  font-family: var(--font-geist-mono), "JetBrains Mono", monospace;
+}
+
+.askew-terminal {
+  scrollbar-width: thin;
+}
+
+@media (max-width: 900px) {
+  .askew-app {
+    padding: 0;
+  }
+
+  .askew-shell {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+  }
 }

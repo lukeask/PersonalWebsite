@@ -2,7 +2,7 @@ import React from "react";
 
 import type { Command, CommandOutput } from "@/lib/types";
 import { registry } from "@/lib/shell/registry";
-import { markCurlDone, markEggFound } from "@/lib/ctf/game";
+import { markCurlDone } from "@/lib/ctf/game";
 import { errOut } from "@/lib/util/output";
 import { BicepCurlDisplay } from "@/lib/commands/fun/bicep-curl-display";
 
@@ -72,7 +72,6 @@ const curlCommand: Command = {
   execute(_args, _flags, _stdin, _ctx) {
     // Any curl invocation unlocks the `break` command (CTF Path B) and does bicep curls
     markCurlDone();
-    markEggFound("bicep-curl");
 
     return {
       lines: [{ content: React.createElement(BicepCurlDisplay) }],

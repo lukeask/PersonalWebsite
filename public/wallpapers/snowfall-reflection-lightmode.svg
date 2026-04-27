@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="reflSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f4ecd6" />
+      <stop offset="100%" stop-color="#dcd2b8" />
+    </linearGradient>
+    <linearGradient id="reflLake" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c8d4d0" />
+      <stop offset="100%" stop-color="#a8b8b4" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1920" height="540" fill="url(#reflSky)" />
+  <rect x="0" y="540" width="1920" height="540" fill="url(#reflLake)" />
+
+  <circle cx="960" cy="540" r="180" fill="#f9f4e3" />
+  <ellipse cx="960" cy="540" rx="180" ry="170" fill="#f9f4e3" opacity="0.85" />
+
+  <polygon points="0,540 280,400 540,500 760,360 980,480 1240,340 1500,460 1760,360 1920,440 1920,540" fill="#7a9087" opacity="0.7" />
+  <polygon points="0,540 200,360 380,460 560,300 760,420 940,280 1140,400 1320,300 1520,400 1720,320 1920,400 1920,540" fill="#3a5a48" />
+  <polygon points="0,540 220,440 420,520 620,400 880,540 1080,420 1340,540 1560,440 1780,520 1920,460 1920,540" fill="#1f3527" />
+
+  <polygon points="0,540 220,640 420,560 620,680 880,540 1080,660 1340,540 1560,640 1780,560 1920,620 1920,540" fill="#5a7068" opacity="0.85" />
+  <polygon points="0,540 200,720 380,620 560,780 760,660 940,800 1140,680 1320,780 1520,680 1720,760 1920,680 1920,540" fill="#6a8478" opacity="0.75" />
+  <polygon points="0,540 280,680 540,580 760,720 980,600 1240,740 1500,620 1760,720 1920,640 1920,540" fill="#9aaca5" opacity="0.6" />
+
+  <g fill="#f9f4e3">
+    <polygon points="200,360 230,395 260,375 290,410 380,460 350,425 320,420 280,440 240,420" />
+    <polygon points="560,300 590,335 620,315 650,350 760,420 720,385 680,380 640,400 600,380" />
+    <polygon points="940,280 970,315 1000,295 1030,330 1140,400 1100,365 1060,360 1020,380 980,360" />
+    <polygon points="1320,300 1350,335 1380,315 1410,350 1520,400 1480,365 1440,360 1400,380 1360,360" />
+    <polygon points="1720,320 1750,355 1780,335 1810,370 1920,400 1880,365 1840,360 1800,380 1760,360" />
+  </g>
+
+  <line x1="0" y1="540" x2="1920" y2="540" stroke="#1a1a14" stroke-width="1" opacity="0.15" />
+
+  <g stroke="#f9f4e3" stroke-width="1.5" opacity="0.4">
+    <line x1="200" y1="900" x2="600" y2="900" />
+    <line x1="700" y1="940" x2="1300" y2="940" />
+    <line x1="1400" y1="900" x2="1800" y2="900" />
+    <line x1="100" y1="980" x2="500" y2="980" />
+    <line x1="900" y1="1000" x2="1500" y2="1000" />
+  </g>
+</svg>

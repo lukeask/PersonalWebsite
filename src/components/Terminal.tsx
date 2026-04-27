@@ -240,7 +240,6 @@ export const Terminal = forwardRef<TerminalHandle, TerminalProps>(
         setInput("");
       },
       // Refs are stable — only re-create when fs or onExecute/getShellState change.
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       [fs, onExecute, getShellState],
     );
 
@@ -447,7 +446,7 @@ export const Terminal = forwardRef<TerminalHandle, TerminalProps>(
 
     if (vimOverlay) {
       return (
-        <div className="h-dvh w-screen bg-terminal-bg text-terminal-fg font-mono">
+        <div className="h-full w-full bg-terminal-bg text-terminal-fg font-mono">
           {vimOverlay}
         </div>
       );
@@ -457,7 +456,7 @@ export const Terminal = forwardRef<TerminalHandle, TerminalProps>(
       <div
         ref={scrollRef}
         onClick={focusInput}
-        className="h-dvh w-screen overflow-y-auto bg-terminal-bg text-terminal-fg font-mono text-sm leading-relaxed p-4 cursor-text flex flex-col"
+        className="askew-terminal h-full w-full overflow-y-auto bg-terminal-bg text-terminal-fg font-mono text-sm leading-relaxed p-5 cursor-text flex flex-col"
       >
         {prelude && prelude.length > 0 && (
           <TerminalOutputRenderer

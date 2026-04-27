@@ -5,7 +5,18 @@ import type { FileSystem } from "@/lib/types";
 const EGGS_LS_KEY = "askew:eggs";
 
 /** All known easter egg IDs, in display order. */
-const ALL_EGGS = ["cowsay", "figlet", "rm-rf", "bicep-curl", "snake", "nano"] as const;
+const ALL_EGGS = [
+  "cowsay",
+  "figlet",
+  "rm-rf",
+  "snake",
+  "nano",
+  "fork-bomb",
+  "make-coffee",
+  "exit",
+  "emacs",
+  "vim-progress",
+] as const;
 type EggId = (typeof ALL_EGGS)[number];
 
 export function getFoundEggs(): string[] {
@@ -46,6 +57,8 @@ export interface CTFState {
   rootPasswordRevealed: boolean;
   /** How many times sudo has been invoked (drives hint progression) */
   sudoInvocations: number;
+  /** Player found the rogue AI's files (added their home to backup.conf) */
+  foundRogueAI: boolean;
 }
 
 const DEFAULT_STATE: CTFState = {
@@ -54,6 +67,7 @@ const DEFAULT_STATE: CTFState = {
   lastBackupTime: 0,
   rootPasswordRevealed: false,
   sudoInvocations: 0,
+  foundRogueAI: false,
 };
 
 /** The root password the player discovers by decrypting accountpasswords.txt.enc */
@@ -202,12 +216,16 @@ export function startBackupCron(fs: FileSystem): () => void {
 const PROGRESS_PATH = "/home/guest/progress.md";
 
 const EGG_LABELS: Record<EggId, string> = {
-  cowsay:      "cowsay",
-  figlet:      "figlet",
-  "rm-rf":     "rm -rf /",
-  "bicep-curl": "curl (🦾)",
-  snake:       "Snake Game (python)",
-  nano:        "nano (Have you tried vim?)",
+  cowsay:         "cowsay",
+  figlet:         "figlet",
+  "rm-rf":        "rm -rf /",
+  snake:          "Snake Game (python)",
+  nano:           "nano (Have you tried vim?)",
+  "fork-bomb":    "Fork bomb (:(){ :|:& };:)",
+  "make-coffee":  "make coffee ☕",
+  exit:           "exit (There is no exit)",
+  emacs:          "emacs (This is a vim household)",
+  "vim-progress": "Tried to edit progress.md",
 };
 
 /** Check whether the current user in localStorage is root. */
@@ -223,26 +241,135 @@ function isRootUser(): boolean {
   }
 }
 
+/** Read SHOW_HINTS from the shell environment stored in localStorage. */
+function getShowHints(): boolean {
+  try {
+    if (typeof localStorage === "undefined") return false;
+    const raw = localStorage.getItem("askew:env");
+    if (!raw) return false;
+    const env = JSON.parse(raw) as Record<string, string>;
+    return env["SHOW_HINTS"] === "1";
+  } catch {
+    return false;
+  }
+}
+
+/** Read SHOW_MORE_HINTS from the shell environment stored in localStorage. */
+function getShowMoreHints(): boolean {
+  try {
+    if (typeof localStorage === "undefined") return false;
+    const raw = localStorage.getItem("askew:env");
+    if (!raw) return false;
+    const env = JSON.parse(raw) as Record<string, string>;
+    return env["SHOW_MORE_HINTS"] === "1";
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Check whether the encrypted credentials file has been obtained.
+ * The file is available in the backup archive once the cron has run
+ * with /root/ included in the backed-up directories.
+ */
+function hasObtainedEncryptedFile(ctf: CTFState): boolean {
+  if (ctf.lastBackupTime === 0) return false;
+  return (
+    ctf.lastBackupDirs.includes("/root/") ||
+    ctf.lastBackupDirs.includes("/root")
+  );
+}
+
+/**
+ * Check whether the player has found the rogue AI's files by adding
+ * /home/not_rogue_agi_pls_no_kill9 to backup.conf.
+ */
+function hasFoundRogueAI(ctf: CTFState): boolean {
+  return (
+    ctf.lastBackupDirs.includes("/home/not_rogue_agi_pls_no_kill9/") ||
+    ctf.lastBackupDirs.includes("/home/not_rogue_agi_pls_no_kill9")
+  );
+}
+
 /** Generate the markdown content for progress.md. */
 export function generateProgressMd(): string {
   const ctf = loadCTFState();
   const found = new Set(getFoundEggs());
   const hasRoot = isRootUser();
+  const showHints = getShowHints();
+  const showMoreHints = getShowMoreHints();
+
+  // showMoreHints implies showHints for label reveal purposes
+  const revealLabels = showHints || showMoreHints;
 
   const check = (done: boolean) => (done ? "[x]" : "[ ]");
 
-  const ctfSection = [
+  const encFileObtained = hasObtainedEncryptedFile(ctf);
+  const rogueAIFound = hasFoundRogueAI(ctf);
+
+  // ── CTF section ────────────────────────────────────────────────────────────
+
+  const ctfLines: string[] = [
     "## CTF: Privilege Escalation",
     "",
-    `- ${check(ctf.hasDoneCurl)} Ran curl (unlocked the \`break\` command)`,
-    `- ${check(ctf.rootPasswordRevealed)} Decrypted the root credentials`,
-    `- ${check(hasRoot)} Gained root access`,
-  ].join("\n");
+    `- ${check(encFileObtained)} Obtained encrypted credentials file`,
+  ];
+
+  if (showMoreHints && !encFileObtained) {
+    ctfLines.push(
+      "  💡 Check /opt/scripts/backup.conf — it's world-writable. Add /root/ and wait for the cron job."
+    );
+  } else if (showHints && !encFileObtained) {
+    ctfLines.push(
+      "  💡 Hint: There might be a background process worth investigating..."
+    );
+  }
+
+  ctfLines.push(`- ${check(ctf.rootPasswordRevealed)} Decrypted the root credentials`);
+
+  if (showMoreHints && !ctf.rootPasswordRevealed) {
+    ctfLines.push(
+      "  💡 Extract the backup with tar, then use openssl/break to crack the .enc file"
+    );
+  }
+
+  ctfLines.push(`- ${check(hasRoot)} 🏆 Gained root access`);
+
+  if (showMoreHints && !hasRoot) {
+    ctfLines.push(
+      `  💡 Use the credentials you found: su root <password>`
+    );
+  }
+
+  ctfLines.push("");
+
+  // Curl shortcut
+  const curlLabel = (ctf.hasDoneCurl || revealLabels)
+    ? "Shortcut: Used curl (unlocked `break` command)"
+    : "Shortcut: ???";
+  ctfLines.push(`- ${check(ctf.hasDoneCurl)} ${curlLabel}`);
+
+  // Rogue AI shortcut
+  const rogueLabel = (rogueAIFound || revealLabels)
+    ? "Shortcut: Found the rogue AI's files"
+    : "Shortcut: ???";
+  ctfLines.push(`- ${check(rogueAIFound)} ${rogueLabel}`);
+
+  if (showMoreHints && !rogueAIFound) {
+    ctfLines.push(
+      "  💡 Run 'who' to see other users. Try adding their home directory to backup.conf."
+    );
+  }
+
+  const ctfSection = ctfLines.join("\n");
+
+  // ── Easter eggs section ────────────────────────────────────────────────────
 
   const foundCount = ALL_EGGS.filter((id) => found.has(id)).length;
+
   const eggLines = ALL_EGGS.map((id) => {
     const done = found.has(id);
-    const label = done ? EGG_LABELS[id] : "???";
+    const label = (done || revealLabels) ? EGG_LABELS[id] : "???";
     return `- ${check(done)} ${label}`;
   });
 
@@ -252,7 +379,18 @@ export function generateProgressMd(): string {
     ...eggLines,
   ].join("\n");
 
-  return ["# Progress", "", ctfSection, "", eggSection, ""].join("\n");
+  // ── Footer ─────────────────────────────────────────────────────────────────
+
+  let footer: string;
+  if (showMoreHints) {
+    footer = "---\n*Maximum hints active. You got this!*";
+  } else if (showHints) {
+    footer = "---\n*Hints are active. For even more help, run `export SHOW_MORE_HINTS=1`.*";
+  } else {
+    footer = "---\n*Stuck? Run `export SHOW_HINTS=1` to reveal hints.*";
+  }
+
+  return ["# Progress", "", ctfSection, "", eggSection, "", footer, ""].join("\n");
 }
 
 /** Write the progress file to the overlay filesystem. */

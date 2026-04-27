@@ -1,8 +1,8 @@
 import React from "react";
-import { ForkBombDisplay } from "./fork-bomb-display";
-import type { CommandOutput } from "@/lib/types";
 
-// TODO T-404: import { markEggFound } from "@/lib/ctf/hints";
+import type { CommandOutput } from "@/lib/types";
+import { markEggFound } from "@/lib/ctf/game";
+import { ForkBombDisplay } from "./fork-bomb-display";
 
 // ─── Fork bomb detector ───────────────────────────────────────────────────────
 // Export this so executor.ts can call it on raw input BEFORE parsing.
@@ -15,7 +15,7 @@ export function isForkBomb(rawInput: string): boolean {
 // ─── Fork bomb output ─────────────────────────────────────────────────────────
 
 export function makeForkBombOutput(): CommandOutput {
-  // TODO T-404: markEggFound("fork-bomb");
+  markEggFound("fork-bomb");
   return {
     lines: [{ content: React.createElement(ForkBombDisplay) }],
     exitCode: 0,

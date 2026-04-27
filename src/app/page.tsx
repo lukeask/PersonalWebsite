@@ -31,11 +31,61 @@ import "@/lib/commands/git";
 import "@/lib/commands/fun";
 import { popMotdLines } from "@/lib/commands/neofetch";
 import "@/lib/commands/ctf";
+import "@/lib/commands/reset";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type VimState = { file: string } | null;
 type OverlayKind = "vim" | "ps1" | "mail" | null;
+type VisitorTheme = "dark" | "light";
+
+const THEME_STORAGE_KEYS = ["askew:theme", "visitor-theme", "theme"] as const;
+
+function normalizeTheme(raw: string | null | undefined): VisitorTheme | null {
+  if (!raw) return null;
+  const value = raw.trim().toLowerCase();
+  if (value.includes("light")) return "light";
+  if (value.includes("dark")) return "dark";
+  if (value === "0" || value === "false") return "dark";
+  if (value === "1" || value === "true") return "light";
+  return null;
+}
+
+function readThemeFromStorage(storage: Storage): VisitorTheme | null {
+  for (const key of THEME_STORAGE_KEYS) {
+    const found = normalizeTheme(storage.getItem(key));
+    if (found) return found;
+  }
+  return null;
+}
+
+function resolveVisitorTheme(): VisitorTheme {
+  if (typeof window === "undefined") return "dark";
+
+  const htmlTheme = normalizeTheme(
+    document.documentElement.getAttribute("data-theme"),
+  );
+  if (htmlTheme) return htmlTheme;
+
+  const rootClassList = document.documentElement.classList;
+  if (rootClassList.contains("light")) return "light";
+  if (rootClassList.contains("dark")) return "dark";
+
+  const localTheme = readThemeFromStorage(localStorage);
+  if (localTheme) return localTheme;
+
+  const sessionTheme = readThemeFromStorage(sessionStorage);
+  if (sessionTheme) return sessionTheme;
+
+  if (
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-color-scheme: light)").matches
+  ) {
+    return "light";
+  }
+
+  return "dark";
+}
 
 const DEFAULT_USER: UserIdentity = {
   username: "guest",
@@ -77,8 +127,9 @@ export default function Home() {
   const [overlayKind, setOverlayKind] = useState<OverlayKind>(null);
   const [vimState, setVimState] = useState<VimState>(null);
   const [user, setUser] = useState<UserIdentity>(DEFAULT_USER);
-  const [cwd, setCwd] = useState(DEFAULT_USER.home);
+  const [cwd] = useState(DEFAULT_USER.home);
   const [prelude, setPrelude] = useState<TerminalOutputLine[]>([]);
+  const [visitorTheme, setVisitorTheme] = useState<VisitorTheme>("dark");
   const neofetchRunRef = useRef(false);
 
   const fs = useMemo(() => createFilesystem(), []);
@@ -87,9 +138,13 @@ export default function Home() {
   useEffect(() => {
     initTelemetry();
     ensureGuestUser();
-    const savedUser = loadCurrentUser();
-    if (savedUser) setUser(savedUser);
-    setPrelude(popMotdLines());
+    const userTimer = setTimeout(() => {
+      const savedUser = loadCurrentUser();
+      if (savedUser) setUser(savedUser);
+    }, 0);
+    const preludeTimer = setTimeout(() => {
+      setPrelude(popMotdLines());
+    }, 0);
 
     // Start the backup cron simulation (runs every 2 minutes)
     const stopCron = startBackupCron(fs);
@@ -97,7 +152,11 @@ export default function Home() {
     // Write the initial progress file (reflects any previously saved state)
     updateProgressFile(fs);
 
-    return () => stopCron();
+    return () => {
+      clearTimeout(userTimer);
+      clearTimeout(preludeTimer);
+      stopCron();
+    };
   }, [fs]);
 
   // ── Register factory commands (need React callbacks) ──────────────────────
@@ -129,7 +188,32 @@ export default function Home() {
       neofetchRunRef.current = false;
       clearTimeout(id);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Match shell chrome to visitor theme (default dark) ────────────────────
+  useEffect(() => {
+    const syncTheme = () => setVisitorTheme(resolveVisitorTheme());
+    syncTheme();
+
+    const onStorage = (e: StorageEvent) => {
+      if (!e.key || THEME_STORAGE_KEYS.includes(e.key as (typeof THEME_STORAGE_KEYS)[number])) {
+        syncTheme();
+      }
+    };
+
+    const mediaQuery =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-color-scheme: light)")
+        : null;
+    const onMediaChange = () => syncTheme();
+
+    window.addEventListener("storage", onStorage);
+    mediaQuery?.addEventListener?.("change", onMediaChange);
+
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      mediaQuery?.removeEventListener?.("change", onMediaChange);
+    };
   }, []);
 
   // ── Overlay renders ───────────────────────────────────────────────────────
@@ -160,16 +244,21 @@ export default function Home() {
     ) : undefined;
 
   return (
-    <div className="h-screen w-screen bg-terminal-bg overflow-hidden">
-      <Terminal
-        ref={terminalRef}
-        registry={registry}
-        fs={fs}
-        initialUser={user}
-        initialCwd={DEFAULT_USER.home}
-        vimOverlay={vimOverlay}
-        prelude={prelude}
-      />
+    <div className="askew-app" data-theme={visitorTheme}>
+      <div className="askew-wallpaper" />
+      <div className="askew-wallpaper-vignette" />
+
+      <div className="askew-shell">
+        <Terminal
+          ref={terminalRef}
+          registry={registry}
+          fs={fs}
+          initialUser={user}
+          initialCwd={DEFAULT_USER.home}
+          vimOverlay={vimOverlay}
+          prelude={prelude}
+        />
+      </div>
     </div>
   );
 }

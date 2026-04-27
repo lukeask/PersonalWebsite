@@ -20,6 +20,7 @@ import { json } from "@codemirror/lang-json";
 import { markdown } from "@codemirror/lang-markdown";
 import type { FileSystem } from "@/lib/types";
 import { resolvePath } from "@/lib/util/paths";
+import { markEggFound } from "@/lib/ctf/game";
 
 function getLanguageExtension(filename: string): Extension | null {
   const ext = filename.split(".").pop()?.toLowerCase();
@@ -485,6 +486,18 @@ export function createVimCommand({ onOpen, onOpenPs1 }: CreateVimCommandOptions)
               content: "Opening PS1 editor for .bashrc...",
               style: "dim" as const,
             },
+          ],
+          exitCode: 0,
+        };
+      }
+
+      // Intercept: vim progress.md — cheating is not the way
+      if (basename === "progress.md" || file === "/home/guest/progress.md") {
+        markEggFound("vim-progress");
+        return {
+          lines: [
+            { content: "Nice try. 🕵️" },
+            { content: "Progress is earned, not edited.", style: "dim" as const },
           ],
           exitCode: 0,
         };

@@ -61,7 +61,7 @@ const exitCommand: Command = {
   description: "exit the shell",
   usage: "exit",
   execute(_args, _flags, _stdin, ctx) {
-    // TODO T-404: markEggFound("exit");
+    markEggFound("exit");
     const name = ctx.user.username;
     return {
       lines: [
@@ -81,7 +81,7 @@ const emacsCommand: Command = {
   description: "text editor",
   usage: "emacs [file]",
   execute() {
-    // TODO T-404: markEggFound("emacs");
+    markEggFound("emacs");
     return {
       lines: [
         { content: "emacs: command not found. This is a vim household.", style: "error" },

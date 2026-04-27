@@ -8,21 +8,32 @@ interface NeofetchProps {
   onNavigate?: (command: string) => void;
 }
 
-// ─── ASCII Art (placeholder — Luke plans an animated 3D head globe) ──────────
+// ─── ASCII Art (alpine peak + reflection) ────────────────────────────────────
 
 const ASCII_ART = [
-  "  ██╗      █████╗ ",
-  "  ██║     ██╔══██╗",
-  "  ██║     ███████║",
-  "  ██║     ██╔══██║",
-  "  ███████╗██║  ██║",
-  "  ╚══════╝╚═╝  ╚═╝",
+  "        /\\",
+  "       /  \\",
+  "      /    \\",
+  "     /  /\\  \\",
+  "    /  /  \\  \\",
+  "   /__/____\\__\\",
+  "   ‾‾‾‾‾‾‾‾‾‾‾‾",
+  "   \\  \\    /  /",
+  "    \\  \\  /  /",
+  "     \\  \\/  /",
+  "      \\    /",
+  "       \\  /",
+  "        \\/",
 ];
 
 const ASCII_ART_SMALL = [
-  " █╗  ██╗",
-  " ██╗███║",
-  " ╚══╝╚═╝",
+  "    /\\",
+  "   /  \\",
+  "  /____\\",
+  "  ‾‾‾‾‾‾",
+  "  \\    /",
+  "   \\  /",
+  "    \\/",
 ];
 
 // ─── Info lines ──────────────────────────────────────────────────────────────
@@ -64,19 +75,18 @@ const NAV_ITEMS: NavItem[] = [
 
 export function Neofetch({ onNavigate }: NeofetchProps) {
   const artLines = ASCII_ART;
-  const artWidth = Math.max(...artLines.map((l) => l.length));
 
   return (
     <div className="font-mono">
       {/* ASCII art + info panel side by side */}
       <div className="flex flex-col sm:flex-row gap-0 sm:gap-4">
         {/* ASCII art — hidden on very narrow screens, small variant shown instead */}
-        <div className="hidden sm:block text-terminal-highlight whitespace-pre leading-tight select-none shrink-0">
+        <div className="hidden sm:block text-terminal-highlight whitespace-pre leading-tight select-none shrink-0 min-w-[18ch] text-center">
           {artLines.map((line, i) => (
             <div key={i}>{line}</div>
           ))}
         </div>
-        <div className="sm:hidden text-terminal-highlight whitespace-pre leading-tight select-none">
+        <div className="sm:hidden text-terminal-highlight whitespace-pre leading-tight select-none min-w-[10ch] text-center">
           {ASCII_ART_SMALL.map((line, i) => (
             <div key={i}>{line}</div>
           ))}
