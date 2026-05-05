@@ -29,18 +29,18 @@ export class OverlayFileSystem implements FileSystem {
 
   /** True if the path has an explicit tombstone entry. */
   isTombstoned(path: string): boolean {
-    const entry = this.cache.get(resolvePath(path, "/"));
+    const entry = this.cache.get(resolvePath(path, "/", "/"));
     return entry?.deleted === true;
   }
 
   /** True if the path has a live (non-deleted) file entry in the cache. */
   hasFile(path: string): boolean {
-    const entry = this.cache.get(resolvePath(path, "/"));
+    const entry = this.cache.get(resolvePath(path, "/", "/"));
     return entry !== undefined && !entry.deleted;
   }
 
   read(path: string): string {
-    const p = resolvePath(path, "/");
+    const p = resolvePath(path, "/", "/");
     const entry = this.cache.get(p);
     if (!entry || entry.deleted) throw new Error(`No such file or directory: ${path}`);
     if (this.isDirectory(p)) throw new Error(`Is a directory: ${path}`);
@@ -48,7 +48,7 @@ export class OverlayFileSystem implements FileSystem {
   }
 
   write(path: string, content: string): void {
-    const p = resolvePath(path, "/");
+    const p = resolvePath(path, "/", "/");
     const now = Date.now();
     const existing = this.cache.get(p);
     const entry: CacheEntry = {
@@ -62,7 +62,7 @@ export class OverlayFileSystem implements FileSystem {
   }
 
   delete(path: string): void {
-    const p = resolvePath(path, "/");
+    const p = resolvePath(path, "/", "/");
     const now = Date.now();
     const existing = this.cache.get(p);
     const tombstone: CacheEntry = {
@@ -76,14 +76,14 @@ export class OverlayFileSystem implements FileSystem {
   }
 
   exists(path: string): boolean {
-    const p = resolvePath(path, "/");
+    const p = resolvePath(path, "/", "/");
     const entry = this.cache.get(p);
     if (entry !== undefined) return !entry.deleted;
     return this.isDirectory(p);
   }
 
   isDirectory(path: string): boolean {
-    const p = resolvePath(path, "/");
+    const p = resolvePath(path, "/", "/");
     if (p === "/") return true;
     const prefix = p + "/";
     for (const [key, entry] of this.cache) {
@@ -93,7 +93,7 @@ export class OverlayFileSystem implements FileSystem {
   }
 
   stat(path: string): FileStat {
-    const p = resolvePath(path, "/");
+    const p = resolvePath(path, "/", "/");
     const entry = this.cache.get(p);
     if (entry && !entry.deleted) {
       return {
@@ -117,7 +117,7 @@ export class OverlayFileSystem implements FileSystem {
   }
 
   list(path: string): string[] {
-    const p = resolvePath(path, "/");
+    const p = resolvePath(path, "/", "/");
     if (!this.exists(p)) throw new Error(`No such file or directory: ${path}`);
     if (!this.isDirectory(p)) throw new Error(`Not a directory: ${path}`);
 
@@ -135,7 +135,7 @@ export class OverlayFileSystem implements FileSystem {
   }
 
   glob(pattern: string, basePath: string = "/"): string[] {
-    const resolvedBase = resolvePath(basePath, "/");
+    const resolvedBase = resolvePath(basePath, "/", "/");
     const allPaths = this.collectPaths(resolvedBase);
     const regex = globToRegex(pattern, resolvedBase);
     return allPaths.filter((p) => regex.test(p)).sort();

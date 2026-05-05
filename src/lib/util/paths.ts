@@ -8,7 +8,7 @@
 export function resolvePath(
   path: string,
   cwd: string,
-  home = "/home/guest",
+  home: string,
 ): string {
   let p = path;
   if (p === "~" || p.startsWith("~/")) p = home + p.slice(1);

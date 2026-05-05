@@ -244,6 +244,30 @@ describe("parseCommand", () => {
     expect(cmd.args).toEqual(["file.txt"]);
   });
 
+  it("keeps positional arg after boolean short flag", () => {
+    const tokens = tokenize("ls -l /some/path", env);
+    const cmd = parseCommand(tokens);
+    expect(cmd.name).toBe("ls");
+    expect(cmd.flags).toEqual({ l: true });
+    expect(cmd.args).toEqual(["/some/path"]);
+  });
+
+  it("treats unknown short flags as boolean", () => {
+    const tokens = tokenize("cat -n file.txt", env);
+    const cmd = parseCommand(tokens);
+    expect(cmd.name).toBe("cat");
+    expect(cmd.flags).toEqual({ n: true });
+    expect(cmd.args).toEqual(["file.txt"]);
+  });
+
+  it("does not consume pid for kill -9", () => {
+    const tokens = tokenize("kill -9 1234", env);
+    const cmd = parseCommand(tokens);
+    expect(cmd.name).toBe("kill");
+    expect(cmd.flags).toEqual({ 9: true });
+    expect(cmd.args).toEqual(["1234"]);
+  });
+
   it("parses long boolean flags", () => {
     const tokens = tokenize("ls --all --human-readable", env);
     const cmd = parseCommand(tokens);

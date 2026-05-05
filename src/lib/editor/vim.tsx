@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useRef,
-  useEffect,
-  useState,
-  useCallback,
-  type RefObject,
-} from "react";
+import { useRef, useEffect, useState } from "react";
 import { EditorView, lineNumbers, drawSelection } from "@codemirror/view";
 import { EditorState, type Extension } from "@codemirror/state";
 import {
@@ -124,24 +118,15 @@ export interface VimEditorProps {
   filePath: string;
   fs: FileSystem;
   cwd: string;
+  home: string;
   onQuit: (message?: string) => void;
-}
-
-// ---------------------------------------------------------------------------
-// Stable-ref helpers to avoid stale closures in Vim.defineEx callbacks
-// ---------------------------------------------------------------------------
-
-function useStableRef<T>(value: T): RefObject<T> {
-  const ref = useRef(value);
-  ref.current = value;
-  return ref;
 }
 
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
-export function VimEditor({ filePath, fs, cwd, onQuit }: VimEditorProps) {
+export function VimEditor({ filePath, fs, cwd, home, onQuit }: VimEditorProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
 
@@ -153,46 +138,22 @@ export function VimEditor({ filePath, fs, cwd, onQuit }: VimEditorProps) {
   const [showLineNumbers, setShowLineNumbers] = useState(true);
   const [statusMessage, setStatusMessage] = useState("");
 
-  const resolvedPath = resolvePath(currentFile, cwd);
+  const resolvedPath = resolvePath(currentFile, cwd, home);
 
-  // Stable refs for defineEx callbacks
-  const modifiedRef = useStableRef(modified);
-  const currentFileRef = useStableRef(currentFile);
-  const resolvedPathRef = useStableRef(resolvedPath);
-  const onQuitRef = useStableRef(onQuit);
-  const fsRef = useStableRef(fs);
-  const cwdRef = useStableRef(cwd);
-  const viewRefStable = useStableRef(viewRef.current);
+  // Refs for Vim.defineEx callbacks — updated in effects (no ref writes during render)
+  const modifiedRef = useRef(modified);
+  const currentFileRef = useRef(currentFile);
+  const resolvedPathRef = useRef(resolvedPath);
+  const onQuitRef = useRef(onQuit);
+  const fsRef = useRef(fs);
 
-  // Keep viewRefStable in sync
   useEffect(() => {
-    (viewRefStable as { current: EditorView | null }).current =
-      viewRef.current;
-  });
-
-  // ------------------------------------------------------------------
-  // Save helper (used by both component and ex-commands)
-  // ------------------------------------------------------------------
-
-  const doSave = useCallback((): boolean => {
-    const view = viewRef.current;
-    if (!view) return false;
-    const content = view.state.doc.toString();
-    try {
-      fs.write(resolvedPath, content);
-      setModified(false);
-      const lc = view.state.doc.lines;
-      setStatusMessage(
-        `"${currentFile}" ${lc}L, ${content.length}C written`,
-      );
-      return true;
-    } catch (e) {
-      setStatusMessage(
-        `E514: write error: ${e instanceof Error ? e.message : String(e)}`,
-      );
-      return false;
-    }
-  }, [fs, resolvedPath, currentFile]);
+    modifiedRef.current = modified;
+    currentFileRef.current = currentFile;
+    resolvedPathRef.current = resolvedPath;
+    onQuitRef.current = onQuit;
+    fsRef.current = fs;
+  }, [modified, currentFile, resolvedPath, onQuit, fs]);
 
   // ------------------------------------------------------------------
   // Define ex commands (runs once, uses refs for up-to-date values)
@@ -288,7 +249,7 @@ export function VimEditor({ filePath, fs, cwd, onQuit }: VimEditorProps) {
         setShowLineNumbers(false);
       }
     });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps -- refs are stable
+  }, []);
 
   // ------------------------------------------------------------------
   // Create / recreate editor when file or line-number pref changes
@@ -300,12 +261,13 @@ export function VimEditor({ filePath, fs, cwd, onQuit }: VimEditorProps) {
 
     let content = "";
     let isNewFile = false;
-    const resolved = resolvePath(currentFile, cwd);
+    const resolved = resolvePath(currentFile, cwd, home);
 
     try {
       if (fs.exists(resolved)) {
         if (fs.isDirectory(resolved)) {
-          setStatusMessage(`"${currentFile}" is a directory`);
+          const dirMsg = `"${currentFile}" is a directory`;
+          queueMicrotask(() => setStatusMessage(dirMsg));
           return;
         }
         content = fs.read(resolved);
@@ -317,7 +279,8 @@ export function VimEditor({ filePath, fs, cwd, onQuit }: VimEditorProps) {
     }
 
     if (content && isBinaryContent(content)) {
-      setStatusMessage(`"${currentFile}" appears to be a binary file`);
+      const binMsg = `"${currentFile}" appears to be a binary file`;
+      queueMicrotask(() => setStatusMessage(binMsg));
       content = "";
     }
 
@@ -352,21 +315,20 @@ export function VimEditor({ filePath, fs, cwd, onQuit }: VimEditorProps) {
     const state = EditorState.create({ doc: content, extensions });
     const view = new EditorView({ state, parent });
     viewRef.current = view;
-    (viewRefStable as { current: EditorView | null }).current = view;
 
-    setModified(false);
-    setLineCount(view.state.doc.lines);
-    setMode("NORMAL");
+    const docLines = view.state.doc.lines;
+    const statusAfterOpen = truncated
+      ? `"${currentFile}" truncated (file too large)`
+      : isNewFile
+        ? `"${currentFile}" [New File]`
+        : `"${currentFile}" ${docLines}L, ${content.length}C`;
 
-    if (truncated) {
-      setStatusMessage(`"${currentFile}" truncated (file too large)`);
-    } else if (isNewFile) {
-      setStatusMessage(`"${currentFile}" [New File]`);
-    } else {
-      setStatusMessage(
-        `"${currentFile}" ${view.state.doc.lines}L, ${content.length}C`,
-      );
-    }
+    queueMicrotask(() => {
+      setModified(false);
+      setLineCount(docLines);
+      setMode("NORMAL");
+      setStatusMessage(statusAfterOpen);
+    });
 
     const cm = getCM(view);
     if (cm) {
@@ -387,7 +349,7 @@ export function VimEditor({ filePath, fs, cwd, onQuit }: VimEditorProps) {
       view.destroy();
       viewRef.current = null;
     };
-  }, [currentFile, cwd, fs, showLineNumbers]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentFile, cwd, fs, home, showLineNumbers]);
 
   // ------------------------------------------------------------------
   // Render
@@ -451,7 +413,7 @@ export function VimEditor({ filePath, fs, cwd, onQuit }: VimEditorProps) {
 // ---------------------------------------------------------------------------
 
 interface CreateVimCommandOptions {
-  onOpen: (file: string) => void;
+  onOpen: (file: string, location: { cwd: string; home: string }) => void;
   onOpenPs1?: () => void;
 }
 
@@ -503,7 +465,7 @@ export function createVimCommand({ onOpen, onOpenPs1 }: CreateVimCommandOptions)
         };
       }
 
-      onOpen(file);
+      onOpen(file, { cwd: _ctx.cwd, home: _ctx.user.home });
       return { lines: [], exitCode: 0 };
     },
   } satisfies import("@/lib/types").Command;

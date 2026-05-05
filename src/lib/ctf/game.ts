@@ -70,31 +70,12 @@ const DEFAULT_STATE: CTFState = {
   foundRogueAI: false,
 };
 
-/** The root password the player discovers by decrypting accountpasswords.txt.enc */
-export const ROOT_PASSWORD = "toor_askew2020";
-
-/** The encryption passphrase for Path A (puzzle clues) */
+/**
+ * Passphrase for openssl/break on accountpasswords.txt.enc (clues: mail, bash_history).
+ * The root password itself is not in the bundle — only derivable by decrypting the .enc
+ * blob (OpenSSL salted AES-128-CBC) shipped in filesystem.json.
+ */
 export const ENC_PASSPHRASE = "askew2020";
-
-/** The decrypted content of accountpasswords.txt.enc */
-export const DECRYPTED_PASSWORDS = [
-  "# askew.sh system credentials - CONFIDENTIAL",
-  "# Last updated: 2020-01-15",
-  "",
-  "[root]",
-  `password: ${ROOT_PASSWORD}`,
-  "",
-  "[services]",
-  "backup_user: bkup_s3rvice!",
-  "db_admin: (see vault)",
-  "",
-  "# ──────────────────────────────────────────",
-  "# Nice work. You found the credentials.",
-  `# Flag: CTF{wr1t4bl3_conf_r00ts_backup_pwn3d}`,
-  "#",
-  `# Run:  su root ${ROOT_PASSWORD}`,
-  "# ──────────────────────────────────────────",
-].join("\n");
 
 // ─── State persistence ───────────────────────────────────────────────────────
 

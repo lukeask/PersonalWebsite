@@ -76,21 +76,23 @@ function makeCtx(fs: FileSystem, cwd = "/home/guest"): CommandContext {
 
 describe("resolvePath", () => {
   it("resolves absolute paths as-is", () => {
-    expect(resolvePath("/etc/hosts", "/home/guest")).toBe("/etc/hosts");
+    expect(resolvePath("/etc/hosts", "/home/guest", "/home/guest")).toBe(
+      "/etc/hosts",
+    );
   });
 
   it("resolves relative paths against cwd", () => {
-    expect(resolvePath("file.txt", "/home/guest")).toBe(
+    expect(resolvePath("file.txt", "/home/guest", "/home/guest")).toBe(
       "/home/guest/file.txt",
     );
   });
 
   it("handles root cwd", () => {
-    expect(resolvePath("file.txt", "/")).toBe("/file.txt");
+    expect(resolvePath("file.txt", "/", "/home/guest")).toBe("/file.txt");
   });
 
   it("collapses duplicate slashes", () => {
-    expect(resolvePath("file.txt", "/home/guest/")).toBe(
+    expect(resolvePath("file.txt", "/home/guest/", "/home/guest")).toBe(
       "/home/guest/file.txt",
     );
   });
@@ -143,7 +145,10 @@ describe("createVimCommand", () => {
     const ctx = makeCtx(makeFs({}));
     const out = cmd.execute(["test.txt"], {}, null, ctx);
     expect(out.exitCode).toBe(0);
-    expect(onOpen).toHaveBeenCalledWith("test.txt");
+    expect(onOpen).toHaveBeenCalledWith("test.txt", {
+      cwd: "/home/guest",
+      home: "/home/guest",
+    });
   });
 
   it("intercepts .bashrc and does not call onOpen", () => {

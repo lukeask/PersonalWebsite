@@ -157,6 +157,7 @@ const pwdCommand: Command = {
 function buildTree(
   fs: FileSystem,
   path: string,
+  home: string,
   prefix: string,
   depth: number,
   maxDepth: number,
@@ -169,7 +170,7 @@ function buildTree(
   entries.forEach((entry, i) => {
     const isLast = i === entries.length - 1;
     const connector = isLast ? "└── " : "├── ";
-    const fullPath = resolvePath(entry, path);
+    const fullPath = resolvePath(entry, path, home);
     const isDir = fs.isDirectory(fullPath);
     const displayName = isDir ? `${entry}/` : entry;
 
@@ -183,7 +184,7 @@ function buildTree(
 
     if (isDir) {
       const childPrefix = prefix + (isLast ? "    " : "│   ");
-      buildTree(fs, fullPath, childPrefix, depth + 1, maxDepth, lines);
+      buildTree(fs, fullPath, home, childPrefix, depth + 1, maxDepth, lines);
     }
   });
 }
@@ -209,7 +210,7 @@ const treeCommand: Command = {
     }
 
     const lines: TerminalOutputLine[] = [{ content: targetPath, style: "highlight" }];
-    buildTree(ctx.fs, targetPath, "", 1, maxDepth, lines);
+    buildTree(ctx.fs, targetPath, ctx.user.home, "", 1, maxDepth, lines);
 
     return { lines, exitCode: 0 };
   },

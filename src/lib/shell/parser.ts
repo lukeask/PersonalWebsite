@@ -18,6 +18,15 @@ export interface ChainEntry {
   operator: "&&" | ";" | null;
 }
 
+const SHORT_VALUE_FLAGS: Record<string, Set<string>> = {
+  head: new Set(["n"]),
+  tail: new Set(["n"]),
+  tree: new Set(["L"]),
+  tar: new Set(["f"]),
+  openssl: new Set(["k"]),
+  kill: new Set(["s"]),
+};
+
 // --- Arithmetic Evaluator ---
 
 function evaluateArithmetic(
@@ -284,6 +293,7 @@ export function parseCommand(tokens: Token[]): ParsedCommand {
   const name = words[0];
   const args: string[] = [];
   const flags: Record<string, string | boolean> = {};
+  const valueFlags = SHORT_VALUE_FLAGS[name] ?? new Set<string>();
 
   let i = 1;
   while (i < words.length) {
@@ -304,7 +314,11 @@ export function parseCommand(tokens: Token[]): ParsedCommand {
     } else if (w.startsWith("-") && w.length > 1) {
       const flagStr = w.slice(1);
       if (flagStr.length === 1) {
-        if (i + 1 < words.length && !words[i + 1].startsWith("-")) {
+        if (
+          valueFlags.has(flagStr) &&
+          i + 1 < words.length &&
+          !words[i + 1].startsWith("-")
+        ) {
           flags[flagStr] = words[i + 1];
           i++;
         } else {

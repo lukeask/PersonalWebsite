@@ -109,6 +109,33 @@ describe("validate()", () => {
     if (!result.valid) expect(result.error).toMatch(/200/);
   });
 
+  it("rejects subject with control characters (e.g. newline, NUL, DEL)", () => {
+    for (const bad of [
+      "Hello\nBcc: evil",
+      "Hi\r\n",
+      "x\x00y",
+      "x\x7Fy",
+    ]) {
+      const result = validate({ ...valid, subject: bad });
+      expect(result.valid).toBe(false);
+      if (!result.valid) {
+        expect(result.error).toMatch(/subject.*control/i);
+      }
+    }
+  });
+
+  it("accepts body with newlines when subject is clean", () => {
+    const result = validate({
+      ...valid,
+      subject: "Normal subject",
+      body: "Line one\nLine two\n\nThanks.",
+    });
+    expect(result.valid).toBe(true);
+    if (result.valid) {
+      expect(result.body.body).toContain("\n");
+    }
+  });
+
   // body validation
   it("rejects missing body", () => {
     const result = validate({ ...valid, body: undefined });

@@ -36,6 +36,10 @@ yarn-error.log*
 # agents (screenshots, notes, tickets)
 .agents/
 
+# scratch / isolated builds
+/tmp/
+/.next-isolated/
+
 # editor
 .vscode/
 

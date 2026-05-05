@@ -1,6 +1,6 @@
 import type { FileSystem, FileEntry, FileStat } from "@/lib/types";
 import { globToRegex } from "@/lib/util/glob";
-import { joinPath } from "@/lib/util/paths";
+import { joinPath, resolvePath } from "@/lib/util/paths";
 
 type TreeNode =
   | { type: "file"; entry: FileEntry }
@@ -8,9 +8,11 @@ type TreeNode =
 
 export class BaseFileSystem implements FileSystem {
   private root: TreeNode;
+  private home: string;
 
   constructor(files: FileEntry[]) {
     this.root = { type: "directory", children: {} };
+    this.home = detectHomePath(files);
     for (const entry of files) {
       this.insertEntry(entry);
     }
@@ -45,29 +47,7 @@ export class BaseFileSystem implements FileSystem {
 
   resolvePath(path: string, cwd: string = "/"): string {
     if (path === "") return cwd;
-
-    let expanded = path;
-    if (expanded === "~" || expanded.startsWith("~/")) {
-      expanded = "/home/guest" + expanded.slice(1);
-    }
-
-    const absolute = expanded.startsWith("/")
-      ? expanded
-      : cwd.replace(/\/$/, "") + "/" + expanded;
-
-    const parts = absolute.split("/");
-    const resolved: string[] = [];
-
-    for (const part of parts) {
-      if (part === "" || part === ".") continue;
-      if (part === "..") {
-        resolved.pop();
-      } else {
-        resolved.push(part);
-      }
-    }
-
-    return "/" + resolved.join("/");
+    return resolvePath(path, cwd, this.home);
   }
 
   private getNode(resolvedPath: string): TreeNode | null {
@@ -159,4 +139,12 @@ export class BaseFileSystem implements FileSystem {
   delete(_path: string): void {
     throw new Error("Base filesystem is read-only");
   }
+}
+
+function detectHomePath(files: FileEntry[]): string {
+  for (const file of files) {
+    const match = file.path.match(/^\/home\/[^/]+/);
+    if (match) return match[0];
+  }
+  return "/";
 }

@@ -3,117 +3,13 @@
 // the client IP for privacy, and inserts them into Neon Postgres.
 // ---------------------------------------------------------------------------
 
-import { createHmac } from "crypto";
 import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
+import { getClientIp, hashClientIp } from "@/lib/client-ip-privacy";
 import { isRateLimited } from "@/lib/rate-limit";
 
+import { type TelemetryEvent, validate } from "./validation";
+
 type NeonSql = NeonQueryFunction<false, false>;
-
-// ---------------------------------------------------------------------------
-// Types & validation
-// ---------------------------------------------------------------------------
-
-export interface TelemetryEvent {
-  command: string;
-  timestamp: number;
-  sessionId: string;
-}
-
-export interface TelemetryBody {
-  events: TelemetryEvent[];
-}
-
-type ValidationOk = { valid: true; body: TelemetryBody };
-type ValidationErr = { valid: false; error: string };
-
-const MAX_EVENTS = 100;
-const MAX_COMMAND_LEN = 500;
-const MAX_SESSION_ID_LEN = 64;
-
-export function validate(data: unknown): ValidationOk | ValidationErr {
-  if (typeof data !== "object" || data === null || Array.isArray(data)) {
-    return { valid: false, error: "Invalid request body." };
-  }
-
-  const { events } = data as Record<string, unknown>;
-
-  if (!Array.isArray(events)) {
-    return { valid: false, error: "events must be an array." };
-  }
-
-  if (events.length === 0) {
-    return { valid: false, error: "events must not be empty." };
-  }
-
-  if (events.length > MAX_EVENTS) {
-    return {
-      valid: false,
-      error: `events must contain at most ${MAX_EVENTS} items.`,
-    };
-  }
-
-  for (let i = 0; i < events.length; i++) {
-    const ev = events[i];
-    if (typeof ev !== "object" || ev === null || Array.isArray(ev)) {
-      return { valid: false, error: `events[${i}] is not a valid object.` };
-    }
-
-    const { command, timestamp, sessionId } = ev as Record<string, unknown>;
-
-    if (typeof command !== "string" || !command) {
-      return { valid: false, error: `events[${i}].command must be a non-empty string.` };
-    }
-    if (command.length > MAX_COMMAND_LEN) {
-      return {
-        valid: false,
-        error: `events[${i}].command must be at most ${MAX_COMMAND_LEN} characters.`,
-      };
-    }
-
-    if (typeof timestamp !== "number" || !Number.isFinite(timestamp)) {
-      return { valid: false, error: `events[${i}].timestamp must be a finite number.` };
-    }
-
-    if (typeof sessionId !== "string" || !sessionId) {
-      return { valid: false, error: `events[${i}].sessionId must be a non-empty string.` };
-    }
-    if (sessionId.length > MAX_SESSION_ID_LEN) {
-      return {
-        valid: false,
-        error: `events[${i}].sessionId must be at most ${MAX_SESSION_ID_LEN} characters.`,
-      };
-    }
-  }
-
-  return {
-    valid: true,
-    body: { events: events as TelemetryEvent[] },
-  };
-}
-
-// ---------------------------------------------------------------------------
-// IP extraction (Vercel / Cloudflare aware)
-// ---------------------------------------------------------------------------
-
-export function getClientIp(request: Request): string {
-  return (
-    request.headers.get("cf-connecting-ip") ||
-    request.headers.get("x-forwarded-for")?.split(",")[0] ||
-    request.headers.get("x-real-ip") ||
-    "unknown"
-  );
-}
-
-// ---------------------------------------------------------------------------
-// HMAC hashing for privacy
-// ---------------------------------------------------------------------------
-
-export function hashIp(ip: string, secret: string): string {
-  return createHmac("sha256", secret)
-    .update(ip)
-    .digest("hex")
-    .substring(0, 16);
-}
 
 // ---------------------------------------------------------------------------
 // Rate limiting — 10 requests per minute per hashed IP.
@@ -200,7 +96,7 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const ip = getClientIp(request);
-  const hashedIp = hashIp(ip, secret);
+  const hashedIp = hashClientIp(ip, secret);
 
   // Database
   const databaseUrl = process.env.DATABASE_URL;

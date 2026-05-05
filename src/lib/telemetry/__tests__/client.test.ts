@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { MAX_TELEMETRY_COMMAND_LEN } from "../constants";
 import {
   trackCommand,
   redactCommand,
@@ -179,6 +180,22 @@ describe("trackCommand() — buffer management", () => {
   it("redacts sensitive commands before buffering", () => {
     trackCommand("export DB_PASS=secret");
     expect(_getBuffer()[0].command).toBe("export DB_PASS=<redacted>");
+  });
+
+  it("leaves commands at the telemetry max length unchanged", () => {
+    const cmd = "a".repeat(MAX_TELEMETRY_COMMAND_LEN);
+    trackCommand(cmd);
+    expect(_getBuffer()[0].command).toBe(cmd);
+    expect(_getBuffer()[0].command.length).toBe(MAX_TELEMETRY_COMMAND_LEN);
+  });
+
+  it("truncates commands longer than the telemetry max with an ellipsis", () => {
+    const cmd = "b".repeat(MAX_TELEMETRY_COMMAND_LEN + 100);
+    trackCommand(cmd);
+    const stored = _getBuffer()[0].command;
+    expect(stored.length).toBe(MAX_TELEMETRY_COMMAND_LEN);
+    expect(stored.endsWith("…")).toBe(true);
+    expect(stored.startsWith("b".repeat(MAX_TELEMETRY_COMMAND_LEN - 1))).toBe(true);
   });
 });
 

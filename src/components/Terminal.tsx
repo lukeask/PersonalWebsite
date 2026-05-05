@@ -353,7 +353,14 @@ export const Terminal = forwardRef<TerminalHandle, TerminalProps>(
       } else if (e.key === "Tab") {
         e.preventDefault();
         if (!registry || !fs) return;
-        const result = getTabCompletion(input, cursor, registry, fs, cwd);
+        const result = getTabCompletion(
+          input,
+          cursor,
+          registry,
+          fs,
+          cwd,
+          user.home,
+        );
         if (result.type === "single" && result.value != null) {
           setInput(result.value);
           setCursorPos(result.cursorPos!);

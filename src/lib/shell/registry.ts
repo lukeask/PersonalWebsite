@@ -5,8 +5,19 @@ export class CommandRegistryImpl implements CommandRegistry {
   private aliasMap = new Map<string, string>();
 
   register(cmd: Command): void {
+    if (this.commands.has(cmd.name)) {
+      console.warn(
+        `[registry] '${cmd.name}' was already registered; overwriting.`,
+      );
+    }
     this.commands.set(cmd.name, cmd);
     for (const alias of cmd.aliases) {
+      if (this.aliasMap.has(alias)) {
+        const prev = this.aliasMap.get(alias);
+        console.warn(
+          `[registry] alias '${alias}' was already registered (→ '${prev}'); overwriting (→ '${cmd.name}').`,
+        );
+      }
       this.aliasMap.set(alias, cmd.name);
     }
   }

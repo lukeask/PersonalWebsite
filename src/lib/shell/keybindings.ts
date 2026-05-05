@@ -14,6 +14,7 @@ function getPathCompletions(
   partial: string,
   fs: FileSystem,
   cwd: string,
+  home: string,
 ): string[] {
   const isAbsolute = partial.startsWith("/");
   let dir: string;
@@ -25,7 +26,7 @@ function getPathCompletions(
     prefix = partial;
   } else {
     const dirPart = partial.slice(0, lastSlash) || "/";
-    dir = isAbsolute ? dirPart : resolvePath(dirPart, cwd);
+    dir = isAbsolute ? dirPart : resolvePath(dirPart, cwd, home);
     prefix = partial.slice(lastSlash + 1);
   }
 
@@ -55,6 +56,7 @@ export function getTabCompletion(
   registry: CommandRegistry,
   fs: FileSystem,
   cwd: string,
+  home: string,
 ): CompletionResult {
   const beforeCursor = input.slice(0, cursorPos);
   const afterCursor = input.slice(cursorPos);
@@ -67,7 +69,7 @@ export function getTabCompletion(
   if (isFirstToken) {
     matches = registry.getCompletions(partial).map((m) => m + " ");
   } else {
-    matches = getPathCompletions(partial, fs, cwd);
+    matches = getPathCompletions(partial, fs, cwd, home);
   }
 
   if (matches.length === 0) {

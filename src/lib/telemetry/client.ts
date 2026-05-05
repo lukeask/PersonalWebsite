@@ -2,6 +2,8 @@
 // Telemetry client — batches command events and flushes to /api/telemetry.
 // ---------------------------------------------------------------------------
 
+import { MAX_TELEMETRY_COMMAND_LEN } from "@/lib/telemetry/constants";
+
 interface BufferedEvent {
   command: string;
   timestamp: number;
@@ -83,6 +85,16 @@ export function redactCommand(command: string): string {
   }
 
   return command;
+}
+
+/**
+ * Ensures telemetry commands fit API validation ({@link MAX_TELEMETRY_COMMAND_LEN}).
+ * Long strings become a prefix plus U+2026 HORIZONTAL ELLIPSIS.
+ */
+function clampCommandForTelemetry(command: string): string {
+  const max = MAX_TELEMETRY_COMMAND_LEN;
+  if (command.length <= max) return command;
+  return command.slice(0, max - 1) + "…";
 }
 
 // ---------------------------------------------------------------------------
@@ -190,7 +202,7 @@ export function trackCommand(
   }
 
   buffer.push({
-    command: redactCommand(command),
+    command: clampCommandForTelemetry(redactCommand(command)),
     timestamp: Date.now(),
   });
 }

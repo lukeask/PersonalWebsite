@@ -1,6 +1,7 @@
 import type { Command, CommandOutput, UserIdentity } from "@/lib/types";
 import { registry } from "@/lib/shell/registry";
-import { ROOT_PASSWORD } from "@/lib/ctf/game";
+import { ENC_PASSPHRASE } from "@/lib/ctf/game";
+import { decryptOpenSslEncAes128Cbc, extractRootPassword } from "@/lib/ctf/openssl-compat";
 import { errOut } from "@/lib/util/output";
 
 // --- Storage keys ---
@@ -299,7 +300,15 @@ const suCommand: Command = {
 
     if (targetName === "root") {
       const providedPw = args[1] ?? "";
-      if (providedPw === ROOT_PASSWORD) {
+      let actualRootPw: string | null = null;
+      try {
+        const encBlob = ctx.fs.read("/root/accountpasswords.txt.enc");
+        const decrypted = decryptOpenSslEncAes128Cbc(encBlob, ENC_PASSPHRASE);
+        actualRootPw = decrypted ? extractRootPassword(decrypted) : null;
+      } catch {
+        actualRootPw = null;
+      }
+      if (actualRootPw !== null && providedPw === actualRootPw) {
         // CTF victory! Grant root access
         const rootIdentity: UserIdentity = {
           username: "root",

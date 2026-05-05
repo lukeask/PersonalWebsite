@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { validate, getClientIp, hashIp } from "../route";
+import { getClientIp, hashClientIp } from "@/lib/client-ip-privacy";
+import { MAX_TELEMETRY_COMMAND_LEN } from "@/lib/telemetry/constants";
+import { validate } from "../validation";
 
 // ---------------------------------------------------------------------------
 // validate() — unit tests
@@ -102,10 +104,31 @@ describe("validate()", () => {
 
   it("rejects when command exceeds max length", () => {
     const result = validate({
-      events: [{ command: "x".repeat(501), timestamp: 123, sessionId: "abc" }],
+      events: [
+        {
+          command: "x".repeat(MAX_TELEMETRY_COMMAND_LEN + 1),
+          timestamp: 123,
+          sessionId: "abc",
+        },
+      ],
     });
     expect(result.valid).toBe(false);
-    if (!result.valid) expect(result.error).toMatch(/500/);
+    if (!result.valid) {
+      expect(result.error).toMatch(String(MAX_TELEMETRY_COMMAND_LEN));
+    }
+  });
+
+  it("accepts command at exactly max length", () => {
+    const result = validate({
+      events: [
+        {
+          command: "y".repeat(MAX_TELEMETRY_COMMAND_LEN),
+          timestamp: 123,
+          sessionId: "abc",
+        },
+      ],
+    });
+    expect(result.valid).toBe(true);
   });
 
   it("rejects when timestamp is not a number", () => {
@@ -180,30 +203,30 @@ describe("getClientIp()", () => {
 });
 
 // ---------------------------------------------------------------------------
-// hashIp() — unit tests
+// hashClientIp() — unit tests
 // ---------------------------------------------------------------------------
 
-describe("hashIp()", () => {
+describe("hashClientIp()", () => {
   it("returns a 16-character hex string", () => {
-    const result = hashIp("127.0.0.1", "test-secret");
+    const result = hashClientIp("127.0.0.1", "test-secret");
     expect(result).toMatch(/^[0-9a-f]{16}$/);
   });
 
   it("produces the same hash for the same IP and secret", () => {
-    const a = hashIp("10.0.0.1", "secret");
-    const b = hashIp("10.0.0.1", "secret");
+    const a = hashClientIp("10.0.0.1", "secret");
+    const b = hashClientIp("10.0.0.1", "secret");
     expect(a).toBe(b);
   });
 
   it("produces different hashes for different IPs", () => {
-    const a = hashIp("10.0.0.1", "secret");
-    const b = hashIp("10.0.0.2", "secret");
+    const a = hashClientIp("10.0.0.1", "secret");
+    const b = hashClientIp("10.0.0.2", "secret");
     expect(a).not.toBe(b);
   });
 
   it("produces different hashes for different secrets", () => {
-    const a = hashIp("10.0.0.1", "secret-a");
-    const b = hashIp("10.0.0.1", "secret-b");
+    const a = hashClientIp("10.0.0.1", "secret-a");
+    const b = hashClientIp("10.0.0.1", "secret-b");
     expect(a).not.toBe(b);
   });
 });

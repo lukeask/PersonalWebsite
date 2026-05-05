@@ -133,27 +133,27 @@ describe("getTabCompletion", () => {
   describe("command completion (first token)", () => {
     it("completes single matching command", () => {
       const reg = makeRegistry("ls", "echo", "cat");
-      const result = getTabCompletion("ec", 2, reg, emptyFs, "/");
+      const result = getTabCompletion("ec", 2, reg, emptyFs, "/", "/home/guest");
       expect(result.type).toBe("single");
       expect(result.value).toBe("echo ");
     });
 
     it("returns multiple matches", () => {
       const reg = makeRegistry("ls", "less", "lsof");
-      const result = getTabCompletion("l", 1, reg, emptyFs, "/");
+      const result = getTabCompletion("l", 1, reg, emptyFs, "/", "/home/guest");
       expect(result.type).toBe("multiple");
       expect(result.matches).toEqual(["less", "ls", "lsof"]);
     });
 
     it("returns none when no match", () => {
       const reg = makeRegistry("ls", "echo");
-      const result = getTabCompletion("z", 1, reg, emptyFs, "/");
+      const result = getTabCompletion("z", 1, reg, emptyFs, "/", "/home/guest");
       expect(result.type).toBe("none");
     });
 
     it("completes with common prefix when multiple matches share one", () => {
       const reg = makeRegistry("list", "listen");
-      const result = getTabCompletion("li", 2, reg, emptyFs, "/");
+      const result = getTabCompletion("li", 2, reg, emptyFs, "/", "/home/guest");
       expect(result.type).toBe("single");
       expect(result.value).toBe("list");
       expect(result.cursorPos).toBe(4);
@@ -167,7 +167,14 @@ describe("getTabCompletion", () => {
         "/home/readme.txt": "file",
       });
       const reg = makeRegistry("cat");
-      const result = getTabCompletion("cat /home/r", 11, reg, fs, "/");
+      const result = getTabCompletion(
+        "cat /home/r",
+        11,
+        reg,
+        fs,
+        "/",
+        "/home/guest",
+      );
       expect(result.type).toBe("single");
       expect(result.value).toBe("cat /home/readme.txt ");
     });
@@ -178,7 +185,7 @@ describe("getTabCompletion", () => {
         "/home/guest": "dir",
       });
       const reg = makeRegistry("cd");
-      const result = getTabCompletion("cd /home/g", 10, reg, fs, "/");
+      const result = getTabCompletion("cd /home/g", 10, reg, fs, "/", "/home/guest");
       expect(result.type).toBe("single");
       expect(result.value).toBe("cd /home/guest/");
     });
@@ -186,7 +193,7 @@ describe("getTabCompletion", () => {
     it("returns none for non-matching paths", () => {
       const fs = makeMockFs({ "/home": "dir" });
       const reg = makeRegistry("cd");
-      const result = getTabCompletion("cd /xyz", 7, reg, fs, "/");
+      const result = getTabCompletion("cd /xyz", 7, reg, fs, "/", "/home/guest");
       expect(result.type).toBe("none");
     });
   });

@@ -2,6 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import * as crypto from "node:crypto";
 import type { FileStat } from "../lib/types";
+import { ENC_PASSPHRASE } from "../lib/ctf/game";
 
 interface FrontmatterResult {
   data: Record<string, string | string[]>;
@@ -39,6 +40,35 @@ export function parseFrontmatter(raw: string): FrontmatterResult {
 
 function sha256(content: string): string {
   return crypto.createHash("sha256").update(content).digest("hex");
+}
+
+/** OpenSSL `enc -aes-128-cbc -md md5 -salt` compatible encryption (build-time only). */
+function encryptOpenSslEncAes128Cbc(plaintext: string, passphrase: string): string {
+  const salt = Buffer.from([0x61, 0x73, 0x6b, 0x65, 0x77, 0x63, 0x74, 0x66]); // "askewctf" — fixed salt for reproducible builds
+  let keyiv = Buffer.alloc(0);
+  let prev = Buffer.alloc(0);
+  while (keyiv.length < 32) {
+    const h = crypto.createHash("md5");
+    if (prev.length) h.update(prev);
+    h.update(passphrase, "utf8");
+    h.update(salt);
+    prev = h.digest();
+    keyiv = Buffer.concat([keyiv, prev]);
+  }
+  const key = keyiv.subarray(0, 16);
+  const iv = keyiv.subarray(16, 32);
+  const cipher = crypto.createCipheriv("aes-128-cbc", key, iv);
+  const encrypted = Buffer.concat([cipher.update(plaintext, "utf8"), cipher.final()]);
+  const payload = Buffer.concat([Buffer.from("Salted__"), salt, encrypted]);
+  return payload.toString("base64");
+}
+
+function wrapBase64Lines(b64: string, width = 64): string {
+  const lines: string[] = [];
+  for (let i = 0; i < b64.length; i += width) {
+    lines.push(b64.slice(i, i + width));
+  }
+  return lines.join("\n");
 }
 
 function makeStat(
@@ -459,19 +489,34 @@ function buildSystemFiles(files: FileMap) {
     "rw-------",
   );
 
-  // The encrypted credentials file (fake AES-128-CBC output)
-  // Starts with U2FsdGVkX1 which is base64 for "Salted__" (openssl enc header)
+  // Encrypted credentials — real OpenSSL salted AES-128-CBC (passphrase ENC_PASSPHRASE).
+  // Plaintext exists only here at build time; client derives it via openssl-compat.ts.
+  const accountPasswordsPlaintext = [
+    "# askew.sh system credentials - CONFIDENTIAL",
+    "# Last updated: 2020-01-15",
+    "",
+    "[root]",
+    "password: toor_askew2020",
+    "",
+    "[services]",
+    "backup_user: bkup_s3rvice!",
+    "db_admin: (see vault)",
+    "",
+    "# ──────────────────────────────────────────",
+    "# Nice work. You found the credentials.",
+    "# Flag: CTF{wr1t4bl3_conf_r00ts_backup_pwn3d}",
+    "#",
+    "# Run:  su root toor_askew2020",
+    "# ──────────────────────────────────────────",
+  ].join("\n");
+  const accountPasswordsEncB64 = encryptOpenSslEncAes128Cbc(
+    accountPasswordsPlaintext,
+    ENC_PASSPHRASE,
+  );
   addFile(
     files,
     "/root/accountpasswords.txt.enc",
-    [
-      "U2FsdGVkX19kYjM3NjJkZTVmOGEzYTFl",
-      "MjQ0ZjE5NWY1Y2M2YjI4N2E4ZTNkMDVl",
-      "OGRhZWI4MTc5YmE3ZjczNDIxZGU2MTBj",
-      "ZjVhMWQ5MzRmYjhhNDdlNjJhNTFkZGNk",
-      "OWEyYmY1ZThlM2Q0YTFjOGYyYjdkNjVl",
-      "N2MzZTlhMGI2ZDhmNGUyYTFjM2Q3ZjVi",
-    ].join("\n"),
+    wrapBase64Lines(accountPasswordsEncB64),
     "rw-------",
   );
 

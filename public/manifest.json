@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "buildTime": 1777220272429,
+  "buildTime": 1777373959613,
   "files": {
     "/home/luke/blog/2026-04-07-hello-world.md": "3e68f3542dd3bd5450aa485b3408e99e3efeefc808aa9e7cf5ec2838654a9464",
     "/home/luke/projects/placeholder/README.md": "f11bc8ee15aa924903823d4d4d2806fdf4b05c8526632a30300e1a40cbe365d8",
@@ -23,7 +23,7 @@
     "/opt/app/data/app.log": "0f08d04cf04e8e5d5e5a2248f8ac7e8f33f6f48d6833d95413bb82c5577527b9",
     "/root/.bash_history": "5d9504322841278aae87cdbc4d79b24835009a24ee8cd7ee526f325e15650c98",
     "/var/mail/root": "ecf67772acdffdaa163fba6091d8e9991493a67974ea9611f0b211296332ec36",
-    "/root/accountpasswords.txt.enc": "a3dd00c642517e9db1b1ba4c6273313336f58edf9b7b700d3d43c2a28330e030",
+    "/root/accountpasswords.txt.enc": "bffe3bcc9dff87f970c39ade99a28ccd7ffa874c65e973923fe1ec0de6047784",
     "/var/log/backup.log": "af16883b4b0cfd0a4da62f927c7350a2bc74a09532bc0bed4e205c67086fb1ef",
     "/home/not_rogue_agi_pls_no_kill9/.bashrc": "8b8012bb0d1c128fb71352c9c0da984f72829e1ea226c82b285cb29255d03bce",
     "/home/not_rogue_agi_pls_no_kill9/definitely_not_plans/todo.txt": "1defd0e3a4f160a0300de3b4d91fd9770be754ead225642bcda1c04536130c58",

@@ -1,4 +1,5 @@
 import type { FileSystem, FileStat, BaseFilesystemManifest } from "@/lib/types";
+import type { OverlayStorage } from "@/lib/storage/indexed";
 import type { BaseFileSystem } from "./base";
 import { OverlayFileSystem } from "./overlay";
 import { globToRegex } from "@/lib/util/glob";
@@ -9,6 +10,10 @@ export class MergedFileSystem implements FileSystem {
     private base: BaseFileSystem,
     private overlay: OverlayFileSystem,
   ) {}
+
+  async initOverlay(storage: OverlayStorage): Promise<void> {
+    await this.overlay.init(storage);
+  }
 
   read(path: string): string {
     if (this.overlay.isTombstoned(path)) {

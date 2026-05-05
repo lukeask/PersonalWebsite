@@ -17,6 +17,8 @@
     "@codemirror/state": "^6.6.0",
     "@codemirror/view": "^6.41.0",
     "@neondatabase/serverless": "^1.0.2",
+    "@noble/ciphers": "^2.2.0",
+    "@noble/hashes": "^2.2.0",
     "@replit/codemirror-vim": "^6.3.0",
     "codemirror": "^6.0.2",
     "dexie": "^4.4.2",

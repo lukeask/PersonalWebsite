@@ -14,7 +14,8 @@ import { ensureGuestUser, loadCurrentUser } from "@/lib/commands/users";
 import { startBackupCron, updateProgressFile } from "@/lib/ctf/game";
 import { createVimCommand } from "@/lib/editor/vim";
 import { createMailCommand } from "@/lib/commands/mail";
-import type { FileSystem, UserIdentity, TerminalOutputLine } from "@/lib/types";
+import type { UserIdentity, TerminalOutputLine } from "@/lib/types";
+import { OverlayStorage } from "@/lib/storage/indexed";
 import filesystemData from "../../public/filesystem.json";
 
 // ─── Side-effect imports: register all commands with the registry ─────────────
@@ -35,7 +36,7 @@ import "@/lib/commands/reset";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type VimState = { file: string } | null;
+type VimState = { file: string; cwd: string; home: string } | null;
 type OverlayKind = "vim" | "ps1" | "mail" | null;
 type VisitorTheme = "dark" | "light";
 
@@ -108,7 +109,7 @@ type RawFileEntry = {
   };
 };
 
-function createFilesystem(): FileSystem {
+function createFilesystem(): MergedFileSystem {
   const rawFiles = filesystemData.files as Record<string, RawFileEntry>;
   const entries = Object.entries(rawFiles).map(([path, data]) => ({
     path,
@@ -136,26 +137,34 @@ export default function Home() {
 
   // ── Initialise on mount ───────────────────────────────────────────────────
   useEffect(() => {
-    initTelemetry();
-    ensureGuestUser();
-    const userTimer = setTimeout(() => {
-      const savedUser = loadCurrentUser();
-      if (savedUser) setUser(savedUser);
-    }, 0);
-    const preludeTimer = setTimeout(() => {
-      setPrelude(popMotdLines());
-    }, 0);
+    let cancelled = false;
+    let userTimer: ReturnType<typeof setTimeout> | undefined;
+    let preludeTimer: ReturnType<typeof setTimeout> | undefined;
+    let stopCron: (() => void) | undefined;
 
-    // Start the backup cron simulation (runs every 2 minutes)
-    const stopCron = startBackupCron(fs);
+    void (async () => {
+      await fs.initOverlay(new OverlayStorage());
+      if (cancelled) return;
 
-    // Write the initial progress file (reflects any previously saved state)
-    updateProgressFile(fs);
+      initTelemetry();
+      ensureGuestUser();
+      userTimer = setTimeout(() => {
+        const savedUser = loadCurrentUser();
+        if (savedUser) setUser(savedUser);
+      }, 0);
+      preludeTimer = setTimeout(() => {
+        setPrelude(popMotdLines());
+      }, 0);
+
+      stopCron = startBackupCron(fs);
+      updateProgressFile(fs);
+    })();
 
     return () => {
-      clearTimeout(userTimer);
-      clearTimeout(preludeTimer);
-      stopCron();
+      cancelled = true;
+      if (userTimer !== undefined) clearTimeout(userTimer);
+      if (preludeTimer !== undefined) clearTimeout(preludeTimer);
+      stopCron?.();
     };
   }, [fs]);
 
@@ -163,8 +172,8 @@ export default function Home() {
   useEffect(() => {
     registry.register(
       createVimCommand({
-        onOpen: (file) => {
-          setVimState({ file });
+        onOpen: (file, location) => {
+          setVimState({ file, cwd: location.cwd, home: location.home });
           setOverlayKind("vim");
         },
         onOpenPs1: () => setOverlayKind("ps1"),
@@ -222,7 +231,8 @@ export default function Home() {
       <VimEditor
         filePath={vimState.file}
         fs={fs}
-        cwd={cwd}
+        cwd={vimState.cwd}
+        home={vimState.home}
         onQuit={() => {
           setVimState(null);
           setOverlayKind(null);

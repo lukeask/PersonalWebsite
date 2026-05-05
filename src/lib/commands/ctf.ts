@@ -6,8 +6,8 @@ import {
   markRootPasswordRevealed,
   incrementSudo,
   ENC_PASSPHRASE,
-  DECRYPTED_PASSWORDS,
 } from "@/lib/ctf/game";
+import { decryptOpenSslEncAes128Cbc } from "@/lib/ctf/openssl-compat";
 import { resolvePath } from "@/lib/util/paths";
 import { errOut } from "@/lib/util/output";
 
@@ -197,15 +197,14 @@ const opensslCommand: Command = {
       return errOut(`openssl: ${inputFile}: does not appear to be an encrypted file`);
     }
 
-    // Check passphrase
-    if (passphrase !== ENC_PASSPHRASE) {
+    const plain = decryptOpenSslEncAes128Cbc(content, passphrase);
+    if (!plain) {
       return errOut("bad decrypt\nopenssl: error decrypting — wrong passphrase?");
     }
 
-    // Success! Reveal the decrypted content
     markRootPasswordRevealed();
 
-    return out(DECRYPTED_PASSWORDS.split("\n"));
+    return out(plain.split(/\r?\n/));
   },
 };
 
@@ -244,7 +243,11 @@ const breakCommand: Command = {
       return errOut(`break: ${inputFile}: does not appear to be an AES-encrypted file`);
     }
 
-    // "Brute force" output
+    const plain = decryptOpenSslEncAes128Cbc(content, ENC_PASSPHRASE);
+    if (!plain) {
+      return errOut(`break: ${inputFile}: could not decrypt`);
+    }
+
     markRootPasswordRevealed();
 
     const lines: TerminalOutputLine[] = [
@@ -257,7 +260,7 @@ const breakCommand: Command = {
       { content: "" },
       { content: `Passphrase found: ${ENC_PASSPHRASE}`, style: "highlight" },
       { content: "" },
-      ...DECRYPTED_PASSWORDS.split("\n").map((line) => ({ content: line })),
+      ...plain.split(/\r?\n/).map((line) => ({ content: line })),
     ];
 
     return { lines, exitCode: 0 };

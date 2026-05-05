@@ -26,6 +26,9 @@ const MAX_FROM_LEN = 254;    // RFC 5321 max email length
 const MAX_SUBJECT_LEN = 200; // Practical cap (RFC 5322 max is 998)
 const MAX_BODY_LEN = 10_000; // ~10 KB of plain text
 
+/** C0/C1-style ASCII controls + DEL — reject in subject to avoid header-injection via newlines etc. */
+const SUBJECT_CONTROLS_RE = /[\x00-\x1F\x7F]/;
+
 export function validate(data: unknown): ValidationOk | ValidationErr {
   if (typeof data !== "object" || data === null || Array.isArray(data)) {
     return { valid: false, error: "Invalid request body." };
@@ -55,6 +58,12 @@ export function validate(data: unknown): ValidationOk | ValidationErr {
     return {
       valid: false,
       error: `subject must be at most ${MAX_SUBJECT_LEN} characters.`,
+    };
+  }
+  if (SUBJECT_CONTROLS_RE.test(subject)) {
+    return {
+      valid: false,
+      error: "subject contains control characters.",
     };
   }
 

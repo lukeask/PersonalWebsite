@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { FileSystem, CommandContext, UserIdentity } from "@/lib/types";
 
-// Provide minimal React stubs so fun.tsx can be imported in Node (no DOM).
+// Provide minimal React stubs so fun commands can be imported in Node (no DOM).
 vi.mock("react", async (importOriginal) => {
   const actual = await importOriginal<typeof import("react")>();
   return {

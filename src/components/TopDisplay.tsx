@@ -36,12 +36,18 @@ function makeBar(fraction: number, width: number): string {
 
 export function TopDisplay({ username }: { username: string }) {
   const [tick, setTick] = useState(0);
+  const [uptimeMs, setUptimeMs] = useState(0);
   const [exited, setExited] = useState(false);
 
-  // Refresh every 2s
+  // Refresh every 2s; uptime from performance.now() only in effects (pure render)
   useEffect(() => {
     if (exited) return;
-    const id = setInterval(() => setTick((t) => t + 1), 2000);
+    const bump = () => {
+      setTick((t) => t + 1);
+      setUptimeMs(performance.now());
+    };
+    bump();
+    const id = setInterval(bump, 2000);
     return () => clearInterval(id);
   }, [exited]);
 
@@ -70,7 +76,6 @@ export function TopDisplay({ username }: { username: string }) {
   const memMiB = memGiB * 1024;
 
   const now = new Date();
-  const uptimeMs = isBrowser() ? performance.now() : 0;
 
   // Sin-based jitter: deterministic per tick, smooth oscillation
   const jitter = (base: number, amplitude: number, phase: number) =>
